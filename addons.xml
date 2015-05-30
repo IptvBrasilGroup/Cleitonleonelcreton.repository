@@ -13,4 +13,61 @@
 		<platform>all</platform>
 	</extension>
 </addon>
+
+<addon id="plugin.program.notificationsIBG" version="1.0.1"
+       name="Notifications IBG" provider-name="iptvbr.org">
+  <requires>
+  	<import addon="xbmc.python" version="2.1.0"/>
+  	<import addon="script.module.addon.common" optional="true" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.service" library="service.py" start="startup">
+  </extension>
+  <extension point="xbmc.addon.metadata">
+  	<summary>IPTV BRASIL GROUP</summary>
+  	<description>Receba as notificaÃ§Ãµes da iptv brasil em tempo real.</description>
+  	<disclaimer>curta nossa pÃ¡gina,torne-se membro do grupo e registre-se em nosso site : http://www.iptvbr.org</disclaimer>
+  	<language>en</language>
+  	<platform>all</platform>
+  	<website>http://www.iptvbr.org</website>
+  	<source></source>
+  	<fanpage>iptv brasil group</fanpage>
+  </extension>
+</addon>
+
+<addon id="plugin.video.iptvbrondemand" name="IPTV Brasil onDemand" version="1.0" provider-name="IPTV Brasil">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="defaut.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <language>en</language>
+    <platform>all</platform>
+    <summary lang="en">IPTV Brasil onDemand</summary>
+    <description lang="en">Assista os sucessos do cinema suas sÃ©ries favoritas,jogos e lutas do ufc no conforto da sua casa,tudo ao alcance de um click.</description>
+    <platform>all</platform>
+  </extension>
+</addon>
+
+<addon id="plugin.video.iptvbrasil" version="1.0"
+	name="Iptvbrasil UPDATE" provider-name="IPTV BRASIL GROUP">
+	<requires>
+		<import addon="xbmc.python" version="2.1.0"/>
+		<import addon="script.module.addon.common" optional="true" />
+		<import addon="script.module.t0mm0.common" optional="true" />
+		<import addon="script.module.urlresolver" optional="true" />
+	</requires>
+	<extension point="xbmc.python.pluginsource" library="default.py">
+		<provides>executable</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary>Iptvbrasil UPDATE</summary>
+		<description>Configure seu xbmc/kodi com os melhores addons com apenas um click!  </description>
+		<platform>all</platform>
+	</extension>
+</addon>
 </addons>
