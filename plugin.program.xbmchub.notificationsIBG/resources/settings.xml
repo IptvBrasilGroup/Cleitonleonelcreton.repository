@@ -1,0 +1,5 @@
+<settings>
+	<category label="General">
+		<setting type="bool" default="false" id="notifications-on-startup" label="Deixar de receber nossas notificações" />
+	</category>
+</settings>

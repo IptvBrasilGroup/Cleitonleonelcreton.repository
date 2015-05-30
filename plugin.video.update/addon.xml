@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.iptvbrasil" version="1.0"
+	name="Iptvbrasil UPDATE" provider-name="IPTV BRASIL GROUP">
+	<requires>
+		<import addon="xbmc.python" version="2.1.0"/>
+		<import addon="script.module.addon.common" optional="true" />
+		<import addon="script.module.t0mm0.common" optional="true" />
+		<import addon="script.module.urlresolver" optional="true" />
+	</requires>
+	<extension point="xbmc.python.pluginsource" library="default.py">
+		<provides>executable</provides>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<summary>Iptvbrasil UPDATE</summary>
+		<description>Configure seu xbmc/kodi com os melhores addons com apenas um click!  </description>
+		<platform>all</platform>
+	</extension>
+</addon>

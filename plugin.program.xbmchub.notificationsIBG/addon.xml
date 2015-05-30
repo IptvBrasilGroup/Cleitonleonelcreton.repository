@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.program.notificationsIBG" version="1.0.1"
+       name="Notifications IBG" provider-name="iptvbr.org">
+  <requires>
+  	<import addon="xbmc.python" version="2.1.0"/>
+  	<import addon="script.module.addon.common" optional="true" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.service" library="service.py" start="startup">
+  </extension>
+  <extension point="xbmc.addon.metadata">
+  	<summary>IPTV BRASIL GROUP</summary>
+  	<description>Receba as notificações da iptv brasil em tempo real.</description>
+  	<disclaimer>curta nossa página,torne-se membro do grupo e registre-se em nosso site : http://www.iptvbr.org</disclaimer>
+  	<language>en</language>
+  	<platform>all</platform>
+  	<website>http://www.iptvbr.org</website>
+  	<source></source>
+  	<fanpage>iptv brasil group</fanpage>
+  </extension>
+</addon>
