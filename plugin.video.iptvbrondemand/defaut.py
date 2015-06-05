@@ -43,7 +43,7 @@ def  menus():
 	dialog = xbmcgui.Dialog()
 	dialog.ok("SEJAM BEM VINDOS", "PRONTOS PARA CURTIREM OS MELHORES CANAIS DE TV,FILMES,SÉRIES,DESENHOS,ANIMES,FUTEBOL E LUTAS DO UFC EM CASA ?                                                                                               ENTÃO PREPAREM A PIPOCA QUE É HORA DO SHOW !!!")
 	addDir('FILMES HD/SD','-',24,artfolder + 'Movies-icon.png')	
-	addDir('SÉRIES HD/SD','-',5,artfolder + 'Icon_series.png')	
+	addDirM('SÉRIES HD/SD','-',5,artfolder + 'Icon_series.png')	
 	addDir('EVENTOS AO VIVO','-',6,artfolder + 'live-events.png')
 	addDir('ANIMAÇÃO','-',15,artfolder + 'animacao.png')	
 	
@@ -63,9 +63,10 @@ def  temporarios():
 def  series():
 	dialog = xbmcgui.Dialog()
 	dialog.ok("SÉRIES ON DEMAND", "                   SUAS SÉRIES FAVORITAS A UM CLICK!!!")
-	addDir('SÉRIES HD','-',16,artfolder + 'Icon_series.png')
-	addDir('SÉRIES HD POR LETRA','-',23,artfolder + 'Icon_series.png')	
+	addDirM('SÉRIES HD','-',16,artfolder + 'Icon_series.png')
+	addDirM('SÉRIES HD POR LETRA','-',23,artfolder + 'Icon_series.png')	
 	addDir('SÉRIES SD','http://www.armagedomfilmes.biz/?cat=21|1',10,artfolder + 'Icon_series.png')	
+	addDirM('PESQUISAR SÉRIES HD','-',30,artfolder + 'lupa.png')
 	addDir('PESQUISAR SÉRIES SD','-',14,artfolder + 'lupa.png')	
 	
 
@@ -216,7 +217,7 @@ def Listar_categorias_series(url=series_base):
  for link in links:
   if not link['href'] == '#' and not html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')) == 'Pagina Inicial':
    #print link['href']
-   addDir(html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')),link['href'],17,'https://copy.com/AalWGHh9t4MPy9Nr?download=1',len(links),True)
+   addDirM(html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')),link['href'],17,'https://copy.com/AalWGHh9t4MPy9Nr?download=1',len(links),True)
  xbmcplugin.setContent(int(sys.argv[1]), 'movies')
  xbmc.executebuiltin('Container.SetViewMode(51)')
  
@@ -239,7 +240,7 @@ def Listar_categorias_series_letra(url=series_base):
  for link in links:
   if len(link.text) == 1:
    #print link['href']
-   addDir('Séries com a letra: '+ html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')).upper(),series_base+link['href'],17,'https://copy.com/AalWGHh9t4MPy9Nr?download=1',len(links),True)
+   addDirM('Séries com a letra: '+ html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')).upper(),series_base+link['href'],17,'https://copy.com/AalWGHh9t4MPy9Nr?download=1',len(links),True)
  xbmcplugin.setContent(int(sys.argv[1]), 'movies')
  xbmc.executebuiltin('Container.SetViewMode(51)') 
  
@@ -260,7 +261,7 @@ def listar_series2(url):
   img = serie.img['src']
   titulo = html_replace_clean(serie.img['alt'].encode('ascii','xmlcharrefreplace'))#episodio.img['alt']
   url = serie.a['href']
-  #addDir(name,url,mode,iconimage,total=0,pasta=True)
+  #addDirM(name,url,mode,iconimage,total=0,pasta=True)
   addDir(titulo,url,18,img,len(series),True)
   #xbmcplugin.setContent(int(sys.argv[1]), 'movies')
   #xbmc.executebuiltin('Container.SetViewMode(500)')
@@ -283,15 +284,15 @@ def listar_episodios_series(url):
   titulo = html_replace_clean(episodio.img['alt'].encode('ascii','xmlcharrefreplace'))#episodio.img['alt']
   url = episodio.a['href']
   #addDir(name,url,mode,iconimage,total=0,pasta=True)
-  addDir(titulo,url,19,img,len(episodios),False)
+  addDirM(titulo,url,19,img,len(episodios),False)
  if len(episodios) == 0:
-  addDir('Esta temporada não tem episodios ainda...aguarde.','',0,'',0,False)
+  addDirM('Esta temporada não tem episodios ainda...aguarde.','',0,'',0,False)
  links = soup("div", { "class" : "Temporadas" })[0]('a')
  if len(links) > 1:
-    addDir('---------------------------','',0,'',0,False)
+    addDirM('---------------------------','',0,'',0,False)
  for link in links:
 	if not link['href'] == '#':
-	    addDir("Temporada: " + link.string,link['href'],18,'',len(episodios)+1)
+	    addDirM("Temporada: " + link.string,link['href'],18,'',len(episodios)+1)
 
  xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
  xbmc.executebuiltin('Container.SetViewMode(503)')
@@ -816,30 +817,24 @@ def pesquisa_serie_sd():
 
 
 def pesquisa_serie_hd():
-	keyb = xbmc.Keyboard('', 'O que está procurando?...') #Chama o keyboard do XBMC com a frase indicada
-	keyb.doModal() #Espera ate que seja confirmada uma determinada string
-	if (keyb.isConfirmed()): #Se a entrada estiver confirmada (isto e, se carregar no OK)
-		search = keyb.getText() #Variavel search fica definida com o conteudo do formulario
-		parametro_pesquisa=urllib.quote(search) #parametro_pesquisa faz o quote da expressao search, isto Ã©, escapa os parametros necessarios para ser incorporado num endereÃ§o url
-		url = 'http://assistirserieshd.com/' % str(parametro_pesquisa) #nova definicao de url. str forÃ§a o parametro de pesquisa a ser uma string
-		print url
-		soup = BeautifulSoup(abrir_url(url))
-		content = BeautifulSoup(soup.find("div", { "id" : "Conteudo" }).prettify())
-		series = content("div", { "class" : "amazingcarousel-image" })
-		codigo_fonte = abrir_url(url)
-
-		total = len(series)
-		for serie in series:
-			titulo = serie.a['title']
-			titulo = titulo.replace('&#8211;',"-").replace('&#8217;',"'").replace('Assistir ','')
-			try:
-				addDir(titulo.encode('utf-8'),serie.a['href'],12,serie.img['src'],True,total)
-			except:
-				pass
+	keyb = xbmc.Keyboard('', 'O que está procurando?...')
+	keyb.doModal()
+	if (keyb.isConfirmed()):
+		search = keyb.getText()
+		parametro_pesquisa=urllib.quote(search)
+		url = 'http://assistirserieshd.com/busca.php?busca=' + str(parametro_pesquisa)
+		listar_series2(url)
 	  
 	  
 		###################################################################################	  
 	  
+	  
+def addDirM(name,url,mode,iconimage,total=0,pasta=True):
+      u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)
+      liz=xbmcgui.ListItem(name,iconImage="DefaultFolder.png", thumbnailImage=iconimage)
+      liz.setInfo( type="Video", infoLabels={ "Title": name} )
+      liz.setProperty('fanart_image', "%s/fanart.jpg"%selfAddon.getAddonInfo("path"))
+      return xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)	  
 	  
 def abrir_url(url):
 	req = urllib2.Request(url)
@@ -847,7 +842,7 @@ def abrir_url(url):
 	response = urllib2.urlopen(req)
 	link=response.read()
 	response.close()
-	return link
+	return link	
 
 def real_url(url):
 	req = urllib2.Request(url)
@@ -1043,7 +1038,11 @@ elif mode==28:
 
 elif mode==29:
 	print 'Mode: 29 - Pesquisa'
-	Pesquisa()	
+	Pesquisa()
+
+elif mode==30:
+	print ""
+	pesquisa_serie_hd()	
 	
 
 	
