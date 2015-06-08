@@ -55,7 +55,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.iptvbrondemand" name="IPTV Brasil onDemand" version="1.2" provider-name="IPTV Brasil">
+<addon id="plugin.video.iptvbrondemand" name="[B][COLOR red]IPTV Brasil onDemand[/COLOR][/B]" version="1.3" provider-name="[B][COLOR green]IPTV Brasil[/COLOR][/B]">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
   </requires>
@@ -66,7 +66,7 @@
     <language>en</language>
     <platform>all</platform>
     <summary lang="en">IPTV Brasil onDemand</summary>
-    <description lang="en">Assista os sucessos do cinema suas sÃ©ries favoritas,jogos e lutas do ufc no conforto da sua casa,tudo ao alcance de um click.</description>
+    <description lang="en">Assista os sucessos do cinema suas sÃ©ries favoritas,jogos e lutas do ufc no conforto da sua casa,tudo ao alcance de um click.Agora com mais opÃ§Ãµes de intretenimento,confira na sessÃ£o filmes HD/SD ...</description>
     <platform>all</platform>
   </extension>
 </addon>

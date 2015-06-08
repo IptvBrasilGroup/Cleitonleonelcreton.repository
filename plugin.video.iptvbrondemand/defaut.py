@@ -21,8 +21,11 @@ from BeautifulSoup import BeautifulStoneSoup,BeautifulStoneSoup, BeautifulSoup, 
 from xbmcgui import ListItem
 from tools import *
 import mechanize, cookielib, base64
-
 import re, htmlentitydefs
+try:
+    import json
+except:
+    import simplejson as json
 h = HTMLParser.HTMLParser()
 
 
@@ -41,72 +44,132 @@ series_base = 'http://assistirserieshd.com/'
 	
 def  menus():        		
 	dialog = xbmcgui.Dialog()
-	dialog.ok("SEJAM BEM VINDOS", "PRONTOS PARA CURTIREM OS MELHORES CANAIS DE TV,FILMES,SÉRIES,DESENHOS,ANIMES,FUTEBOL E LUTAS DO UFC EM CASA ?                                                                                               ENTÃO PREPAREM A PIPOCA QUE É HORA DO SHOW !!!")
-	addDir('FILMES HD/SD','-',24,artfolder + 'Movies-icon.png')	
-	addDirM('SÉRIES HD/SD','-',5,artfolder + 'Icon_series.png')	
-	addDir('EVENTOS AO VIVO','-',6,artfolder + 'live-events.png')
-	addDir('ANIMAÇÃO','-',15,artfolder + 'animacao.png')	
+	dialog.ok("SEJAM BEM VINDOS", "[B]PRONTOS PARA CURTIREM OS MELHORES CANAIS DE TV,FILMES,SÉRIES,DESENHOS,ANIMES,FUTEBOL E LUTAS DO UFC EM CASA ?                                                                                               ENTÃO PREPAREM A PIPOCA QUE É HORA DO SHOW !!![/B]")
+	addDir('[B][COLOR red]FILMES HD/SD[/COLOR][/B]','-',24,artfolder + 'Movies-icon.png')	
+	addDirM('[B][COLOR red]SÉRIES HD/SD[/COLOR][/B]','-',5,artfolder + 'Icon_series.png')	
+	addDir('[B][COLOR red]EVENTOS AO VIVO[/COLOR][/B]','-',6,artfolder + 'live-events.png')
+	addDir('[B][COLOR red]ANIMAÇÃO[/COLOR][/B]','-',15,artfolder + 'animacao.png')	
 	
 	
 def  filmes_hd_sd():
-	addDir('FILMES HD','-',2,artfolder + 'Movies-icon.png')
-	addDir('FILMES SD','-',4,artfolder + 'Movies-icon.png')	
+	addDir('[B]FILMES HD[/B]','-',2,artfolder + 'Movies-icon.png')
+	addDir('[B]FILMES SD[/B]','-',4,artfolder + 'Movies-icon.png')
+	addLink("                                [B][COLOR red]FILMES E SÉRIES DE SITES DA NET[/COLOR][/B]",'',artfolder + '-')
+	addDir('[B]ARMAGEDOM FILMES[/B]','-',31,artfolder + 'icon.png')
+	addDirC('[B]CINEFILMES HD[/B]','-',20,artfolder + 'cinefilmes.png')	
 	
 
 def  temporarios():
 	dialog = xbmcgui.Dialog()
-	dialog.ok("FILMES VARIADOS", "OS FILMES A SEGUIR SÃO DE BAIXA QUALIDADE,SE DESEJAR ASSISTIR EM QUALIDADE FULL HD VÁ PARA A OPÇÃO FILMES HD,OU SE DESEJAR CONTINUAR CLICK EM OK!!!")
-	addDir('FILMES VARIADOS','https://copy.com/hmyyzK71z8yMvo8S?download=1',3,artfolder + 'Movies-icon.png')
-	addDir('FILMES SD','-',8,artfolder + '2k.png')	
+	dialog.ok("FILMES VARIADOS", "[B]OS FILMES A SEGUIR SÃO DE BAIXA QUALIDADE,SE DESEJAR ASSISTIR EM QUALIDADE FULL HD VÁ PARA A OPÇÃO FILMES HD,OU SE DESEJAR CONTINUAR CLICK EM OK!!![/B]")
+	addDir('[B]FILMES VARIADOS[/B]','https://copy.com/hmyyzK71z8yMvo8S?download=1',3,artfolder + 'Movies-icon.png')
+	addDir('[B]FILMES SD[/B]','-',8,artfolder + '2k.png')	
 
 	
 def  series():
 	dialog = xbmcgui.Dialog()
-	dialog.ok("SÉRIES ON DEMAND", "                   SUAS SÉRIES FAVORITAS A UM CLICK!!!")
-	addDirM('SÉRIES HD','-',16,artfolder + 'Icon_series.png')
-	addDirM('SÉRIES HD POR LETRA','-',23,artfolder + 'Icon_series.png')	
-	addDir('SÉRIES SD','http://www.armagedomfilmes.biz/?cat=21|1',10,artfolder + 'Icon_series.png')	
-	addDirM('PESQUISAR SÉRIES HD','-',30,artfolder + 'lupa.png')
-	addDir('PESQUISAR SÉRIES SD','-',14,artfolder + 'lupa.png')	
+	dialog.ok("SÉRIES ON DEMAND", "[B]                   SUAS SÉRIES FAVORITAS A UM CLICK!!![/B]")
+	addDirM('[B]SÉRIES HD[/B]','-',16,artfolder + 'Icon_series.png')
+	addDirM('[B]SÉRIES HD POR LETRA[/B]','-',23,artfolder + 'Icon_series.png')	
+	addDir('[B]SÉRIES SD[/B]','http://www.armagedomfilmes.biz/?cat=21|1',10,artfolder + 'Icon_series.png')	
+	addDirM('[B]PESQUISAR SÉRIES HD[/B]','-',30,artfolder + 'lupa.png')
+	addDir('[B]PESQUISAR SÉRIES SD[/B]','-',14,artfolder + 'lupa.png')	
 	
 
 def  categorias():
 	dialog = xbmcgui.Dialog()
-	dialog.ok("FILMES SOB DEMANDA", "SELECIONE A SEGUIR A CATEGORIA DO FILME DESEJADO !!!")
-	addDir('AÇÃO','https://copy.com/Iyt3UBHMKPehfPPs?download=1',3,artfolder + 'acao.jpg')
-	addDir('ANIMAÇÃO','https://copy.com/rdkdvoVAFOoD6FVu?download=1',3,artfolder + 'animacao.jpg')
-	addDir('AVENTURA','https://copy.com/RK9DFiXkF6BRenUv?download=1',3,artfolder + 'AVENTURA.jpg')
-	addDir('COMÉDIA','https://copy.com/PMDC1RJbl06erivh?download=1',3,artfolder + 'comedia.jpg')
-	addDir('DRAMA','https://copy.com/VQzV2J4YDwigMRor?download=1',3,artfolder + 'DRAMA.jpg')
-	addDir('GUERRA','https://copy.com/e4gfUvkzwIVKDvCH?download=1',3,artfolder + 'GUERRA.jpg')
-	addDir('NACIONAL','https://copy.com/vgLne99gBhJlkQyE?download=1',3,artfolder + 'NACIONAL.jpg')
-	addDir('RELIGIOSO','https://copy.com/eolYU1Zfh6sSOT3L?download=1',3,artfolder + 'RELIGIOSO.jpg')
-	addDir('ROMANCE','https://copy.com/KgOtLnPaaKPqFUp4?download=1',3,artfolder + 'ROMANCE.jpg')
-	addDir('SUSPENSE','https://copy.com/NaVFwAKelkVEmC4O?download=1',3,artfolder + 'SUSPENSE.jpg')
-	addDir('TERROR','https://copy.com/HgCH4omqtdRAr76O?download=1',3,artfolder + 'TERROR.jpg')
+	dialog.ok("FILMES SOB DEMANDA", "[B]SELECIONE A SEGUIR A CATEGORIA DO FILME DESEJADO!!![/B]")
+	addDir('[B]AÇÃO[/B]','https://copy.com/Iyt3UBHMKPehfPPs?download=1',3,artfolder + 'acao.jpg')
+	addDir('[B]ANIMAÇÃO[/B]','https://copy.com/rdkdvoVAFOoD6FVu?download=1',3,artfolder + 'animacao.jpg')
+	addDir('[B]AVENTURA[/B]','https://copy.com/RK9DFiXkF6BRenUv?download=1',3,artfolder + 'AVENTURA.jpg')
+	addDir('[B]COMÉDIA[/B]','https://copy.com/PMDC1RJbl06erivh?download=1',3,artfolder + 'comedia.jpg')
+	addDir('[B]DRAMA[/B]','https://copy.com/VQzV2J4YDwigMRor?download=1',3,artfolder + 'DRAMA.jpg')
+	addDir('[B]GUERRA[/B]','https://copy.com/e4gfUvkzwIVKDvCH?download=1',3,artfolder + 'GUERRA.jpg')
+	addDir('[B]NACIONAL[/B]','https://copy.com/vgLne99gBhJlkQyE?download=1',3,artfolder + 'NACIONAL.jpg')
+	addDir('[B]RELIGIOSO[/B]','https://copy.com/eolYU1Zfh6sSOT3L?download=1',3,artfolder + 'RELIGIOSO.jpg')
+	addDir('[B]ROMANCE[/B]','https://copy.com/KgOtLnPaaKPqFUp4?download=1',3,artfolder + 'ROMANCE.jpg')
+	addDir('[B]SUSPENSE[/B]','https://copy.com/NaVFwAKelkVEmC4O?download=1',3,artfolder + 'SUSPENSE.jpg')
+	addDir('[B]TERROR[/B]','https://copy.com/HgCH4omqtdRAr76O?download=1',3,artfolder + 'TERROR.jpg')
+	
+	
+def Armagedom_categorias():
+	addDir('[B]BLURAY[/B]','http://www.armagedomfilmes.biz/?cat=5529',33,artfolder + 'Movies-icon.png')
+	addDir('[B]LEGENDADOS[/B]','http://www.armagedomfilmes.biz/?s=legendado',33,artfolder + 'Movies-icon.png')
+	addDir('[B]AÇÃO[/B]','http://www.armagedomfilmes.biz/?cat=3227',33,artfolder + 'Movies-icon.png')
+	addDir('[B]ANIMAÇÃO[/B]','http://www.armagedomfilmes.biz/?cat=3228',33,artfolder + 'Movies-icon.png')
+	addDir('[B]AVENTURA[/B]','http://www.armagedomfilmes.biz/?cat=3230',33,artfolder + 'Movies-icon.png')
+	addDir('[B]COMÉDIA[/B]','http://www.armagedomfilmes.biz/?cat=3229',33,artfolder + 'Movies-icon.png')
+	addDir('[B]COMÉDIA ROMANTICA[/B]','http://www.armagedomfilmes.biz/?cat=3231',33,artfolder + 'Movies-icon.png')
+	addDir('[B]DRAMA[/B]','http://www.armagedomfilmes.biz/?cat=3233',33,artfolder + 'Movies-icon.png')
+	addDir('[B]FAROESTE[/B]','http://www.armagedomfilmes.biz/?cat=18',33,artfolder + 'Movies-icon.png')
+	addDir('[B]FICÇÃO CIENTÍFICA[/B]','http://www.armagedomfilmes.biz/?cat=3235',33,artfolder + 'Movies-icon.png')
+	addDir('[B]LUTAS UFC[/B]','http://www.armagedomfilmes.biz/?cat=3394',33,artfolder + 'Movies-icon.png')
+	addDir('[B]NACIONAL[/B]','http://www.armagedomfilmes.biz/?cat=3226',33,artfolder + 'Movies-icon.png')
+	addDir('[B]POLICIAL[/B]','http://www.armagedomfilmes.biz/?cat=72',33,artfolder + 'Movies-icon.png')
+	addDir('[B]RELIGIOSO[/B]','http://www.armagedomfilmes.biz/?cat=20',33,artfolder + 'Movies-icon.png')
+	addDir('[B]ROMANCE[/B]','http://www.armagedomfilmes.biz/?cat=3232',33,artfolder + 'Movies-icon.png')
+	addDir('[B]SHOWS[/B]','http://www.armagedomfilmes.biz/?cat=30',33,artfolder + 'Movies-icon.png')
+	addDir('[B]SUSPENSE[/B]','http://www.armagedomfilmes.biz/?cat=3239',33,artfolder + 'Movies-icon.png')
+	addDir('[B]TERROR[/B]','http://www.armagedomfilmes.biz/?cat=3238',33,artfolder + 'Movies-icon.png')
+	addDir('[B]THRILLER[/B]','http://www.armagedomfilmes.biz/?cat=30',33,artfolder + 'Movies-icon.png')
+
+
+def categorias_cine(url):
+
+	addDirC('[B]FULL HD 1080P[/B]','http://www.cinefilmeshd.com/category/1080p/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]AÇÃO[/B]','http://www.cinefilmeshd.com/category/acao/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]ANIMAÇÃO[/B]','http://www.cinefilmeshd.com/category/animacao/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]AVENTURA[/B]','http://www.cinefilmeshd.com/category/aventura/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]COMÉDIA[/B]','http://www.cinefilmeshd.com/category/comedia/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]COMÉDIA ROMANTICA[/B]','http://www.cinefilmeshd.com/category/comedia-romantica/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]DOCUMENTÁRIOS[/B]','http://www.cinefilmeshd.com/category/documentario/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]DRAMA[/B]','http://www.cinefilmeshd.com/category/drama/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]FICÇÃO CIENTÍFICA[/B]','http://www.cinefilmeshd.com/category/ficcao-cientifica/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]GUERRA[/B]','http://www.cinefilmeshd.com/category/guerra/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]INGLÊS[/B]','http://www.cinefilmeshd.com/category/ingles/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]LEGENDADO[/B]','http://www.cinefilmeshd.com/category/legendados/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]MUSICAL[/B]','http://www.cinefilmeshd.com/category/musical/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]NACIONAL[/B]','http://www.cinefilmeshd.com/category/nacional/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]ROMANCE[/B]','http://www.cinefilmeshd.com/category/romance/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]SUSPENSE[/B]','http://www.cinefilmeshd.com/category/suspense/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]TERROR[/B]','http://www.cinefilmeshd.com/category/terror/',35,artfolder + 'Movies-icon.png')	
 	
 	
 def  eventos_ao_vivo():	
 	dialog = xbmcgui.Dialog()
-	dialog.ok("EVENTOS ESPORTIVOS","                     ASSISTA Á JOGOS E LUTAS AO VIVO !!!")
-	addDir('FUTEBOL','https://copy.com/TOyFN7PDhGvb9nVf?download=1',3,artfolder + 'futebol.png')
-	addDir('LUTAS','https://copy.com/dvX6pkFBatyi2Q6T?download=1',3,artfolder + 'lutas.png')
+	dialog.ok("EVENTOS ESPORTIVOS","[B]                     ASSISTA Á JOGOS E LUTAS AO VIVO!!![/B]")
+	addDir('[B]FUTEBOL[/B]','https://copy.com/TOyFN7PDhGvb9nVf?download=1',3,artfolder + 'futebol.png')
+	addDir('[B]LUTAS[/B]','https://copy.com/dvX6pkFBatyi2Q6T?download=1',3,artfolder + 'lutas.png')
 	
 	
 def Animacao():	
 	dialog = xbmcgui.Dialog()
-	dialog.ok("ASSISTA AQUI:", "          OS MELHORES ANIMES E DESENHOS 24 HORAS!!!")
-	addDir('ANIMES','-',25,artfolder + 'anime.png')	
-	addDir('DESENHOS 24hrs','https://copy.com/0ZeS9pyD92GXM9rM?download=1',3,artfolder + 'Desenhos.png')
+	dialog.ok("ASSISTA AQUI:", "[B]          OS MELHORES ANIMES E DESENHOS 24 HORAS!!![/B]")
+	addDir('[B]ANIMES[/B]','-',25,artfolder + 'anime.png')	
+	addDir('[B]DESENHOS 24hrs[/B]','https://copy.com/0ZeS9pyD92GXM9rM?download=1',3,artfolder + 'Desenhos.png')
 
 
 def Animes():
-	addDir('CATEGORIAS','http://anitube.xpg.uol.com.br/categories',26,artfolder + 'categorias5.png')
-	addDir('RECENTES','http://anitube.xpg.uol.com.br/videos/basic/mr',27,artfolder + 'recentes.png')
-	addDir('BUSCAR ANIME','http://anitube.xpg.uol.com.br/',29,artfolder + 'pesquisa.png')
+	addDir('[B]CATEGORIAS[/B]','http://anitube.xpg.uol.com.br/categories',26,artfolder + 'categorias5.png')
+	addDir('[B]RECENTES[/B]','http://anitube.xpg.uol.com.br/videos/basic/mr',27,artfolder + 'recentes.png')
+	addDir('[B]BUSCAR ANIME[/B]','http://anitube.xpg.uol.com.br/',29,artfolder + 'pesquisa.png')
 	xbmcplugin.setContent(int(sys.argv[1]), 'movies')
 	xbmc.executebuiltin('Container.SetViewMode(500)')
 
+	
+def Armagedom():
+	addDir('[B]CATEGORIAS[/B]','-',32,artfolder + 'Movies-icon.png')
+	addDir('[B]LANÇAMENTOS[/B]','http://www.armagedomfilmes.biz/?cat=3236',33,artfolder + 'Movies-icon.png')
+	addDir('[B]PESQUISAR FILMES[/B]','-',34,artfolder + 'lupa.png')
+
+
+def Cine_hd(url):	
+	addDirC('[B]CATEGORIAS[/B]','-',21,artfolder + 'Movies-icon.png')
+	addDirC('[B]LANÇAMENTOS[/B]','http://www.cinefilmeshd.com/category/lancamento/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]BLURAY[/B]','http://www.cinefilmeshd.com/category/bluray/',35,artfolder + 'Movies-icon.png')
+	addDirC('[B]PESQUISAR[/B]','-',36,artfolder + 'lupa.png')	
+	
+	
 
 def Listar_categorias2(url):
 	print url
@@ -426,7 +489,47 @@ def listar_canais(url):
                   addLink(nome,rtmp,img)
             except:
                   pass
-      xbmc.executebuiltin("Container.SetViewMode(500)")	
+      xbmc.executebuiltin("Container.SetViewMode(500)")
+
+
+def filmes_armagedom(url):
+	codigo_fonte = abrir_url(url)
+	soup = BeautifulSoup(abrir_url(url))
+	content = BeautifulSoup(soup.find("div", { "class" : "bic-miniaturas" }).prettify())
+	filmes = content("div", { "class" : "bic-miniatura" })
+	for filme in filmes:
+		titulo = filme.a["title"].replace('Assistir ','')
+		url = filme.a["href"]
+		img = filme.img["src"]
+		addDir(titulo.encode('utf8'),url,13,img,False,len(filmes)) 
+
+	pagenavi = BeautifulSoup(soup.find('div', { "class" : "wp-pagenavi" }).prettify())("a", { "class" : "nextpostslink" })[0]["href"]
+	addDir('Página Seguinte >>',pagenavi,33,artfolder + 'prox.png')
+
+	xbmcplugin.setContent(int(sys.argv[1]), 'movies')
+	xbmc.executebuiltin('Container.SetViewMode(503)')
+
+
+def filmes_cinefilmeshd(url):
+	codigo_fonte = abrir_url(url)
+	match = re.compile('<h2><a href="(.+?)" title="(.+?)">.+?</a></h2>').findall(codigo_fonte) 
+	img = re.compile('<img src="(.+?)" alt=".+?" />').findall(codigo_fonte) #<div style="text-align: center;"><img alt="" border="0" src="(.+?)"
+
+	a = [] # url titulo img
+	for x in range(0, len(match)):
+		temp = [match[x][0],match[x][1],img[x]]; 
+		a.append(temp);
+	
+	total = len(a)
+	for url2, titulo, img in a:
+		titulo = titulo.replace('&#8211;',"-").replace('&#8217;',"'")	#Linha para corrigir caracteres especiais
+		addDir(titulo,url2,13,img,False,total) # Linha que eu adicionei
+		#addDirPlayer(titulo,url2,4,img,total)  #ver comentarios que fiz na funçao addDirPlayer
+		
+	page = re.compile("<link rel='next' href='(.+?)' />").findall(codigo_fonte)
+	for prox_pagina in page:
+		addDir('Página Seguinte >>',prox_pagina,35,artfolder + 'proxpagina.png')
+		break	
 	  
 	  
 def listar_series(url):
@@ -501,59 +604,9 @@ def listar_series_f2(name,url):
 	for url2, titulo, in a:
 		titulo = titulo.replace('&#8211;',"-").replace('&#8217;',"'").replace('Assistir ','')
 		addDir(titulo,url2,13,'',False,total)
-		
-		
-def listar_videos_series(url):
-	codigo_fonte = abrir_url(url)
 
-	soup = BeautifulSoup(abrir_url(url))
-	lista_filmes = BeautifulSoup(soup.find("div", { "class" : "repeat" }).prettify())
-	print lista_filmes
-	series = lista_filmes.findAll("div", {"class":"miniatura"})
-	print series
-	#resultados = series.findAll("div",{ "id" : "quadrado" })
-	a=[]
-	for resultado in series:
-		print 'href'
-		print resultado
-		try:
-		    temp = ['http://www.cinefilmeshd.com/seriados/' + resultado.a["href"],"%s (%s)" % (resultado.h2.text.encode('ascii', 'ignore').capitalize(),resultado.span.text),resultado.text.encode('ascii', 'ignore'),resultado.img["src"]] 
-		    a.append(temp)
-		except:
-		    temp = ['http://www.cinefilmeshd.com/seriados/' + resultado.a["href"],"%s" % (resultado["search"].encode('ascii', 'ignore').capitalize()),resultado.text.encode('ascii', 'ignore'),resultado.img["src"]] 
-		    a.append(temp)
-		
-	total = len(a)
-	for url2, titulo, plot, img in a:
-		titulo = titulo.replace('&#8211;',"-").replace('&#8217;',"'")	
-		addDir(titulo,url2,12,img,True,total,plot)
-	xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-        xbmc.executebuiltin('Container.SetViewMode(500)')
 		
 		
-def listar_videos_series_f2(url):
-
-	codigo_fonte = abrir_url(url)
-	soup = BeautifulSoup(abrir_url(url))
-	conteudo = BeautifulSoup(soup.find("ul", { "id" : "filmes" }).prettify())
-	temporadas = conteudo("li")
-	
-	total = len(temporadas)
-	i=1
-	print total
-	
-	while i <= total:
-		temporada = conteudo("ul", { "class" : "series"+str(i)+"-code"})
-		for temp in temporada:
-			img = temp.img["src"]
-			titulo = str(i)+" temporada"
-			try:
-				addDir(titulo,url,11,img,True,total)
-			except:
-				pass
-		i=i+1
-
-
 def obtem_url_dropvideo(url):
 	codigo_fonte = abrir_url(url)
 	try:
@@ -621,6 +674,15 @@ def obtem_videopw(url):
 		return [url_video,"-"]
 	except:
 		return ["-","-"]
+		
+def obtem_videopw2(url):
+	codigo_fonte = abrir_url(url)
+	
+	try:
+		url_video = re.findall(r'var vurl2 = "(.*?)";',codigo_fonte)[0]
+		return [url_video,"-"]
+	except:
+		return ["-","-"]		
 
 def obtem_shared2(url):
 	codigo_fonte = abrir_url(url)
@@ -640,15 +702,16 @@ def obtem_cloudzilla(url):
 	except:
 		return ["-","-"]
 
-def player(name,url):
+def player(name,url,iconimage):
 	
 	try:
-		dropvideo = r'src="(.*?dropvideo.*?/embed.*?)"'
+
 		Dropvideo = r'src="(.*?dropvideo.*?/embed.*?)"'
 		dropmega = r'src=".*?drop.*?id=(.*?)"'
 		neodrive = r'src="(.*?neodrive.*?/embed.*?)"'
 		neomega = r'src=".*?neodrive.*?id=(.*?)"'
 		videobis = r'SRC="(.*?videobis.*?/embed.*?)"'
+		videopw2 = r'src=".*?videopw.*?/e/(.*?)"'
 		videopw = r'src=".*?videopw.*?id=(.*?)"'
 		shared2 = r'src=".*?shared2.*?/embed/(.*?)"'
 		cloudzilla = r'cloudzilla.php.id=(.*?)"'
@@ -662,51 +725,52 @@ def player(name,url):
 		matriz = []
 		codigo_fonte = abrir_url(url)
 		
-		try:
-			links.append(re.findall(dropvideo, codigo_fonte)[0])
-			hosts.append('Dropvideo')
-		except:
-			pass
 		
 		try:
+			links.append('http://www.dropvideo.com/embed/'+re.findall(Dropvideo, codigo_fonte)[0])
+			hosts.append('[B][COLOR red]Dropvideo2[/COLOR][/B]')
+		except:
+			pass		
+
+		try:
 			links.append('http://www.dropvideo.com/embed/'+re.findall(dropmega, codigo_fonte)[0])
-			hosts.append('Dropvideo')
+			hosts.append('[B][COLOR red]Dropvideo[/COLOR][/B]')
 		except:
 			pass
 		
 		try:
 			links.append('http://videopw.com/e/'+re.findall(videopw, codigo_fonte)[0])
-			hosts.append('Videopw')
+			hosts.append('[B][COLOR green]Videopw[/COLOR][/B]')
 		except:
 			pass
+
+		try:
+			links.append('http://videopw.com/e/'+re.findall(videopw2, codigo_fonte)[0])
+			hosts.append('[B][COLOR green]Videopw[/COLOR][/B]')
+		except:
+			pass			
 			
 		try:
 			links.append('http://www.shared2.net/embed/'+re.findall(shared2, codigo_fonte)[0])
 			hosts.append('shared2')
 		except:
-			pass			
-			
-		try:
-			links.append('http://www.dropvideo.com/embed/'+re.findall(Dropvideo, codigo_fonte)[0])
-			hosts.append('Dropvideo')
-		except:
-			pass			
+			pass						
 			
 		try:
 			links.append(re.findall(videobis, codigo_fonte)[0])
-			hosts.append('Videobis')
+			hosts.append('[B][COLOR green]Videobis[/COLOR][/B]')
 		except:
 			pass
 		
 		try:
 			links.append(re.findall(neodrive, codigo_fonte)[0])
-			hosts.append('Neodrive')
+			hosts.append('[B][COLOR green]Neodrive[/COLOR][/B]')
 		except:
 			pass
 		
 		try:
 			links.append('http://neodrive.co/embed/'+re.findall(neomega, codigo_fonte)[0])
-			hosts.append('Neodrive')
+			hosts.append('[B][COLOR green]Neodrive[/COLOR][/B]')
 		except:
 			pass	
 			
@@ -744,10 +808,12 @@ def player(name,url):
 			matriz = obtem_neodrive(url_video)
 		elif 'videopw' in url_video:
 			matriz = obtem_videopw(url_video)
+		elif 'videopw2' in url_video:
+			matriz = obtem_videopw2(url_video)			
 		elif 'shared2' in url_video:
 			matriz = obtem_shared2(url_video)			
 		elif 'Dropvideo' in url_video:
-			matriz = obtem_url_vidzi(url_video)			
+			matriz = obtem_url_dropvideo(url_video)			
 		else:
 			print "Falha: " + str(url_video)
 		print matriz
@@ -790,7 +856,9 @@ def player(name,url):
 		#	dialog.ok(" Erro:", " Impossível abrir vídeo! ")
 		#	pass
 	except:
-		listar_series_f2(url)
+		print "erro ao abrir o video"
+		print url_video
+		pass
 
 
 def pesquisa_serie_sd():
@@ -814,6 +882,25 @@ def pesquisa_serie_sd():
 				addDir(titulo.encode('utf-8'),serie.a['href'],12,serie.img['src'],True,total)
 			except:
 				pass
+				
+				
+def pesquisa_filme_armagedom():
+	keyb = xbmc.Keyboard('', 'faca a procura') #Chama o keyboard do XBMC com a frase indicada
+	keyb.doModal() #Espera ate que seja confirmada uma determinada string
+	if (keyb.isConfirmed()): #Se a entrada estiver confirmada (isto e, se carregar no OK)
+		search = keyb.getText() #Variavel search fica definida com o conteudo do formulario
+		parametro_pesquisa=urllib.quote(search) #parametro_pesquisa faz o quote da expressao search, isto Ã©, escapa os parametros necessarios para ser incorporado num endereÃ§o url
+		url = 'http://www.armagedomfilmes.biz/?s=%s&s-btn=buscar' % str(parametro_pesquisa) #nova definicao de url. str forÃ§a o parametro de pesquisa a ser uma string
+		print url
+		soup = BeautifulSoup(abrir_url(url))
+		content = BeautifulSoup(soup.find("div", { "class" : "bic-miniaturas" }).prettify())
+		filmes = content("div", { "class" : "bic-miniatura" })
+		print filmes[0]
+		for filme in filmes:
+			titulo = filme.a["title"].replace('Assistir ','')
+			url = filme.a["href"]
+			img = filme.img["src"]
+			addDir(titulo.encode('utf8'),url,13,img,False,len(filmes))				
 
 
 def pesquisa_serie_hd():
@@ -824,6 +911,15 @@ def pesquisa_serie_hd():
 		parametro_pesquisa=urllib.quote(search)
 		url = 'http://assistirserieshd.com/busca.php?busca=' + str(parametro_pesquisa)
 		listar_series2(url)
+		
+def pesquisa_cinefilmes(url):
+	keyb = xbmc.Keyboard('', 'faca a procura') #Chama o keyboard do XBMC com a frase indicada
+	keyb.doModal() #Espera ate que seja confirmada uma determinada string
+	if (keyb.isConfirmed()): #Se a entrada estiver confirmada (isto e, se carregar no OK)
+		search = keyb.getText() #Variavel search fica definida com o conteudo do formulario
+		parametro_pesquisa=urllib.quote(search) #parametro_pesquisa faz o quote da expressao search, isto Ã©, escapa os parametros necessarios para ser incorporado num endereÃ§o url
+		url = 'http://www.cinefilmeshd.com/?s=' + str(parametro_pesquisa) #nova definicao de url. str forÃ§a o parametro de pesquisa a ser uma string
+		filmes_cinefilmeshd(url) #chama a funÃ§Ã£o listar_videos com o url definido em cima		
 	  
 	  
 		###################################################################################	  
@@ -866,6 +962,14 @@ def addDir(name,url,mode,iconimage,pasta=True,total=1,plot=''):
 	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
 	liz.setProperty('fanart_image', fanart)
 	liz.setInfo( type="video", infoLabels={ "title": name, "plot": plot } )
+	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
+	return ok
+
+def addDirC(name,url,mode,iconimage,pasta=True,total=1):
+	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)
+	ok=True
+	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
+	liz.setProperty('fanart_image', fanart)
 	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
 	return ok	
 	
@@ -980,7 +1084,7 @@ elif mode==12:
 
 elif mode==13:
 	print ""
-	player(name,url)
+	player(name,url,iconimage)
 
 elif mode==14:
 	print ""
@@ -1004,12 +1108,11 @@ elif mode==18:
 elif mode==19:
     Resolve_episodio_serie(url)
 
-elif mode==20:   
-        print ""
-	listar_videos_series(url)
+elif mode==20:
+    Cine_hd(url)
 	
 elif mode==21:
-    listar_videos_series_f2(url)
+    categorias_cine(url)
 
 elif mode==22:
     print ""
@@ -1042,7 +1145,33 @@ elif mode==29:
 
 elif mode==30:
 	print ""
-	pesquisa_serie_hd()	
+	pesquisa_serie_hd()
+
+elif mode==31:
+	print ""
+	Armagedom()
+
+elif mode==32:
+	print ""
+	Armagedom_categorias()
+
+elif mode==33:
+	print ""
+	filmes_armagedom(url)
+
+elif mode==34:
+	print ""
+	pesquisa_filme_armagedom()
+
+elif mode==35:
+	print ""
+	filmes_cinefilmeshd(url)
+	
+elif mode==36:
+	print ""
+	pesquisa_cinefilmes(url)	
+
+	
 	
 
 	
