@@ -22,6 +22,9 @@ from xbmcgui import ListItem
 from tools import *
 import mechanize, cookielib, base64
 import re, htmlentitydefs
+import urlresolver
+import jsunpack
+from bs4 import BeautifulSoup
 try:
     import json
 except:
@@ -29,7 +32,7 @@ except:
 h = HTMLParser.HTMLParser()
 
 
-versao = '1.1'
+versao = '1.4'
 addon_id = 'plugin.video.iptvbrondemand'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -37,12 +40,20 @@ artfolder = addonfolder + '/resources/img/'
 fanart = addonfolder + '/fanart.jpg'
 filmes_base = 'http://www.filmesonline2.com/category/acao/'
 series_base = 'http://assistirserieshd.com/'
+art = 'https://copy.com/Vq3DQcVHwXf6thbC'
+ver_intro = True
  
 
 ###################################################MENUS############################################
 
+
+def Ver_intro():
+	xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(art+'?download=1')
+	return True
+
 	
-def  menus():        		
+def  menus():
+	intro = Ver_intro()        		
 	dialog = xbmcgui.Dialog()
 	dialog.ok("SEJAM BEM VINDOS", "[B]PRONTOS PARA CURTIREM OS MELHORES CANAIS DE TV,FILMES,SÉRIES,DESENHOS,ANIMES,FUTEBOL E LUTAS DO UFC EM CASA ?                                                                                               ENTÃO PREPAREM A PIPOCA QUE É HORA DO SHOW !!![/B]")
 	addDir('[B][COLOR red]FILMES HD/SD[/COLOR][/B]','-',24,artfolder + 'Movies-icon.png')	
@@ -56,7 +67,8 @@ def  filmes_hd_sd():
 	addDir('[B]FILMES SD[/B]','-',4,artfolder + 'Movies-icon.png')
 	addLink("                                [B][COLOR red]FILMES E SÉRIES DE SITES DA NET[/COLOR][/B]",'',artfolder + '-')
 	addDir('[B]ARMAGEDOM FILMES[/B]','-',31,artfolder + 'icon.png')
-	addDirC('[B]CINEFILMES HD[/B]','-',20,artfolder + 'cinefilmes.png')	
+	addDirC('[B]CINEFILMES HD[/B]','-',20,artfolder + 'cinefilmes.png')
+	addDir('[B]MEGAFILMES ONLINE HD[/B]  [COLOR red]Em manutenção !!![/COLOR] ','-',37,artfolder + 'Movies-icon.png')	
 	
 
 def  temporarios():
@@ -133,6 +145,27 @@ def categorias_cine(url):
 	addDirC('[B]ROMANCE[/B]','http://www.cinefilmeshd.com/category/romance/',35,artfolder + 'Movies-icon.png')
 	addDirC('[B]SUSPENSE[/B]','http://www.cinefilmeshd.com/category/suspense/',35,artfolder + 'Movies-icon.png')
 	addDirC('[B]TERROR[/B]','http://www.cinefilmeshd.com/category/terror/',35,artfolder + 'Movies-icon.png')	
+
+
+def Megafilmeshd_categorias():
+	addDir('[B]1080[/B]','http://www.megafilmesonlinehd.com/bluray/bluray-1080p/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]720[/B]','http://www.megafilmesonlinehd.com/bluray/bluray-720p/',39,artfolder + 'Movies-icon.png')	
+	addDir('[B]AÇÃO[/B]','http://www.megafilmesonlinehd.com/filmes/generos/acao/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]ANIMAÇÃO[/B]','http://www.megafilmesonlinehd.com/filmes/generos/animacao/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]AVENTURA[/B]','http://www.megafilmesonlinehd.com/filmes/generos/aventura/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]COMÉDIA[/B]','http://www.megafilmesonlinehd.com/filmes/generos/comedia/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]COMÉDIA ROMANTICA[/B]','http://www.megafilmesonlinehd.com/filmes/generos/comedia-romantica/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]DOCUMENTÁRIO[/B]','http://www.megafilmesonlinehd.com/filmes/generos/documentario/',39,artfolder + 'Movies-icon.png')	
+	addDir('[B]FAROESTE[/B]','http://www.megafilmesonlinehd.com/filmes/generos/faroeste/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]FICÇÃO[/B]','http://www.megafilmesonlinehd.com/filmes/generos/ficcao-cientifica/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]GUERRA[/B]','http://www.megafilmesonlinehd.com/filmes/generos/guerra/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]ROMANCE[/B]','http://www.megafilmesonlinehd.com/filmes/generos/romance/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]NACIONAL[/B]','http://www.megafilmesonlinehd.com/filmes/generos/nacional/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]MUSICAL[/B]','http://www.megafilmesonlinehd.com/filmes/generos/musical/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]POLICIAL[/B]','http://www.megafilmesonlinehd.com/filmes/generos/policial/',39,artfolder + 'Movies-icon.png')	
+	addDir('[B]SUSPENSE[/B]','http://www.megafilmesonlinehd.com/filmes/generos/suspense/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]TERROR[/B]','http://www.megafilmesonlinehd.com/filmes/generos/terror/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]FILMES LEGENDADOS[/B]','http://www.megafilmesonlinehd.com/legendados/',39,artfolder + 'Movies-icon.png')
 	
 	
 def  eventos_ao_vivo():	
@@ -167,7 +200,13 @@ def Cine_hd(url):
 	addDirC('[B]CATEGORIAS[/B]','-',21,artfolder + 'Movies-icon.png')
 	addDirC('[B]LANÇAMENTOS[/B]','http://www.cinefilmeshd.com/category/lancamento/',35,artfolder + 'Movies-icon.png')
 	addDirC('[B]BLURAY[/B]','http://www.cinefilmeshd.com/category/bluray/',35,artfolder + 'Movies-icon.png')
-	addDirC('[B]PESQUISAR[/B]','-',36,artfolder + 'lupa.png')	
+	addDirC('[B]PESQUISAR[/B]','-',36,artfolder + 'lupa.png')
+
+def Megafilmeshd():
+	addDir('[B]CATEGORIAS[/B]','-',38,artfolder + 'Movies-icon.png')
+	addDir('[B]LANÇAMENTOS[/B]','http://www.megafilmesonlinehd.com/filmes-lancamentos-exclusivos',39,artfolder + 'Movies-icon.png')
+	addDir('[B]BLURAY[/B]','http://www.megafilmesonlinehd.com/bluray/',39,artfolder + 'Movies-icon.png')
+	addDir('[B]PESQUISAR[/B]','-',40,artfolder + 'lupa.png')	
 	
 	
 
@@ -270,7 +309,7 @@ def Listar_categorias_series(url=series_base):
  print url
  html = abrir_url2(url)
  #html = html.encode('ascii','xmlcharrefreplace')
- soup = BeautifulSoup(html,convertEntities=BeautifulStoneSoup.XML_ENTITIES)
+ soup = BeautifulSoup(html)
 
  a = []
  menu = soup("ul", { "class" : "SubMenu" })[0]
@@ -290,7 +329,7 @@ def Listar_categorias_series_letra(url=series_base):
  html = abrir_url(url)
  #html = html.encode('ascii','xmlcharrefreplace')
 
- soup = BeautifulSoup(html,convertEntities=BeautifulStoneSoup.XML_ENTITIES)
+ soup = BeautifulSoup(html)
 
  a = []
  links = soup("a", { "rel" : "nofollow" })
@@ -437,7 +476,7 @@ def Listar_programacao(url=filmes_base):
  print url
  html = abrir_url2(url)
  #html = html.encode('ascii','xmlcharrefreplace')
- soup = BeautifulSoup(html,convertEntities=BeautifulStoneSoup.XML_ENTITIES)
+ soup = BeautifulSoup(html)
 
  a = []
  menu = soup("div", { "class" : "agrupador" })[0]
@@ -529,7 +568,29 @@ def filmes_cinefilmeshd(url):
 	page = re.compile("<link rel='next' href='(.+?)' />").findall(codigo_fonte)
 	for prox_pagina in page:
 		addDir('Página Seguinte >>',prox_pagina,35,artfolder + 'proxpagina.png')
-		break	
+		break
+
+
+def Filmes_megafilmeshd(url):
+ print url
+ html = abrir_url2(url)
+ soup = BeautifulSoup(html)
+
+ a = []
+ categorias = soup("div", { "class" : "i-bloco" })[0]
+ #print categorias
+ episodios = categorias("div", { "class" : "bm-img" })
+ for episodio in episodios:
+  img = episodio.img['src']
+  titulo = html_replace_clean(episodio.img['alt'].encode('ascii','xmlcharrefreplace'))
+  url = episodio.a['href']
+  addDir(titulo,url,13,img,False)
+ pages = soup("link",{ "rel" : "next" })
+ for prox_pagina in pages:
+  addDir('Próxima Página >>',prox_pagina["href"],39,artfolder + 'next.png')
+  
+ xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
+ xbmc.executebuiltin('Container.SetViewMode(503)')		
 	  
 	  
 def listar_series(url):
@@ -606,27 +667,56 @@ def listar_series_f2(name,url):
 		addDir(titulo,url2,13,'',False,total)
 
 		
-		
-def obtem_url_dropvideo(url):
-	codigo_fonte = abrir_url(url)
-	try:
-		if not 'dropvideo.com/embed/' in url:
-			id_video = re.findall(r'<iframe src="http://www.dropvideo.com/embed/(.*?)/"',codigo_fonte)[0]
-			codigo_fonte = abrir_url('http://www.dropvideo.com/embed/%s/' % id_video)
-			url_video = re.findall(r'var vurl2 = "(.*?)";',codigo_fonte)[0]
-			url_legendas =	re.compile('var vsubtitle = "(.*?)";').findall(codigo_fonte)[0]
-			print url_video
-			print url_legendas
-		else:
-			codigo_fonte = abrir_url(url)
-			url_video = re.findall(r'var vurl2 = "(.*?)";',codigo_fonte)[0]
-			url_legendas =	re.compile('var vsubtitle = "(.*?)";').findall(codigo_fonte)[0]
-			print url_video
-			print url_legendas			
-	except:
-		url_video = '-'
-		url_legendas = '-'
-	return [url_video,url_legendas]
+def obtem_url_google(url):
+
+    html = urllib.urlopen(url).read()
+    soup = BeautifulSoup(html)
+    dados = urllib2.unquote(soup('script')[4].prettify()).decode('unicode-escape')
+    ttsurls = re.findall(r',\["ttsurl","(.*?)"\]\s', dados)[0]
+    decoded = re.findall(r',\["url_encoded_fmt_stream_map","(.*?)"\]\s',dados)[0]
+    qualidade = []
+    url_video = []
+
+    urls = [l for l in decoded.split('url=') if 'mp4' in l and l.startswith('https')]
+    print urls
+    url_video = []
+    for u in urls:
+	    itags = {5:'Baixa Qualidade, 240p, FLV, 400x240',
+		     17:'Baixa Qualidade, 144p, 3GP, 0x0',
+		     18:'Media Qualidade, 480p, MP4, 480x360',
+		     59:'Media Qualidade, 360p, MP4, 480x360',
+		     22:'Alta Qualidade, 720p, MP4, 1280x720',
+		     34:'Media Qualidade, 360p, FLV, 640x360',
+		     35:'Standard Definition, 480p, FLV, 854x480',
+		     36:'Baixa Qualidade, 240p, 3GP, 0x0',
+		     37:'Alta Qualidade, 1080p, MP4, 1920x1080',
+		     38:'Original Definition, MP4, 4096x3072',
+		     43:'Media Qualidade, 360p, WebM, 640x360',
+		     44:'Standard Definition, 480p, WebM, 854x480',
+		     45:'Alta Qualidade, 720p, WebM, 1280x720',
+		     46:'Alta Qualidade, 1080p, WebM, 1280x720',
+		     82:'Media Qualidade 3D, 360p, MP4, 640x360',
+		     84:'Alta Qualidade 3D, 720p, MP4, 1280x720',
+		     100:'Media Qualidade 3D, 360p, WebM, 640x360',
+		     102:'Alta Qualidade 3D, 720p, WebM, 1280x720'}
+	    q = 'quality='
+	    i = 'itag='
+	    quality = u[u.find(q) + len(q): u.find(',', u.find(q))]
+	    itag = u[u.find(i) + len(i): u.find('&', u.find(i))]
+	    #print "ORG qualitys: " + quality
+	    #print "ORG itag: " + itag
+	    try:
+		    quality = itags[int(itag)]
+	    except:
+		    pass
+	    qualidade.append(quality)
+	    url_video.append(u[:-1])
+    index = 0
+    index = xbmcgui.Dialog().select('Qualidade do vídeo:', qualidade)
+    if index == -1: return['-','-'] # Tive que alterar esta linha para corrigir um pequeno erro
+    return [url_video[index]]
+
+	
 	
 def obtem_videobis(url):
 	codigo_fonte = abrir_url(url)
@@ -636,26 +726,22 @@ def obtem_videobis(url):
 		return [url_video,"-"]
 	except:
 		return ["-","-"]
+		
 
 def obtem_url_dropvideo(url):
 	codigo_fonte = abrir_url(url)
-	
 	try:
-		video = re.findall(r'|post|(.*?)',codigo_fonte)[0]
-		print video
-		url_video = "http://fs013.dropvideo.com/v/"+video+".mp4"
+		soup = BeautifulSoup(codigo_fonte)
+		lista = soup.findAll('script')
+		js = str(lista[9]).replace('<script>',"").replace('</script>',"")
+		sUnpacked = jsunpack.unpack(js)
+		print sUnpacked
+		url_video = re.findall(r'var vurl2="(.*?)";', sUnpacked)
+		url_video = str(url_video).replace("['","").replace("']","")
 		return [url_video,"-"]
 	except:
-		return ["-","-"]
-
-def obtem_url_Dropvideo(url):
-	codigo_fonte = abrir_url(url)
-	
-	try:
-		url_video = re.findall(r'var vurl2 = "(.*?)";',codigo_fonte)[0]
-		return [url_video,"-"]
-	except:
-		return ["-","-"]		
+		pass
+		
 		
 def obtem_neodrive(url):
 	codigo_fonte = abrir_url(url)
@@ -665,6 +751,7 @@ def obtem_neodrive(url):
 		return [url_video,"-"]
 	except:
 		return ["-","-"]
+		
 
 def obtem_videopw(url):
 	codigo_fonte = abrir_url(url)
@@ -675,6 +762,7 @@ def obtem_videopw(url):
 	except:
 		return ["-","-"]
 		
+		
 def obtem_videopw2(url):
 	codigo_fonte = abrir_url(url)
 	
@@ -682,7 +770,8 @@ def obtem_videopw2(url):
 		url_video = re.findall(r'var vurl2 = "(.*?)";',codigo_fonte)[0]
 		return [url_video,"-"]
 	except:
-		return ["-","-"]		
+		return ["-","-"]
+		
 
 def obtem_shared2(url):
 	codigo_fonte = abrir_url(url)
@@ -691,7 +780,8 @@ def obtem_shared2(url):
 		url_video = re.findall(r'src:"(.*?)"',codigo_fonte)[0]
 		return [url_video,"-"]
 	except:
-		return ["-","-"]		
+		return ["-","-"]
+		
 	
 def obtem_cloudzilla(url):
 	codigo_fonte = abrir_url(url)
@@ -701,12 +791,13 @@ def obtem_cloudzilla(url):
 		return [url_video,"-"]
 	except:
 		return ["-","-"]
+		
 
 def player(name,url,iconimage):
 	
 	try:
 
-		Dropvideo = r'src="(.*?dropvideo.*?/embed.*?)"'
+		dropvideo = r'src="(.*?dropvideo.*?/embed.*?)"'
 		dropmega = r'src=".*?drop.*?id=(.*?)"'
 		neodrive = r'src="(.*?neodrive.*?/embed.*?)"'
 		neomega = r'src=".*?neodrive.*?id=(.*?)"'
@@ -725,16 +816,15 @@ def player(name,url,iconimage):
 		matriz = []
 		codigo_fonte = abrir_url(url)
 		
-		
 		try:
-			links.append('http://www.dropvideo.com/embed/'+re.findall(Dropvideo, codigo_fonte)[0])
-			hosts.append('[B][COLOR red]Dropvideo2[/COLOR][/B]')
+			links.append(re.findall(dropvideo, codigo_fonte)[0])
+			hosts.append('[B][COLOR green]Dropvideo[/COLOR][/B]')
 		except:
-			pass		
-
+			pass
+			
 		try:
 			links.append('http://www.dropvideo.com/embed/'+re.findall(dropmega, codigo_fonte)[0])
-			hosts.append('[B][COLOR red]Dropvideo[/COLOR][/B]')
+			hosts.append('[B][COLOR green]Dropvideo[/COLOR][/B]')
 		except:
 			pass
 		
@@ -799,7 +889,7 @@ def player(name,url,iconimage):
 		
 		print 'Player url: %s' % url_video
 		if 'dropvideo.com/embed' in url_video:
-			matriz = obtem_url_dropvideo(url_video)   # esta linha está a mais
+			matriz = obtem_url_dropvideo(url_video)
 		elif 'cloudzilla' in url_video:
 			matriz = obtem_cloudzilla(url_video)
 		elif 'videobis' in url_video:
@@ -811,9 +901,7 @@ def player(name,url,iconimage):
 		elif 'videopw2' in url_video:
 			matriz = obtem_videopw2(url_video)			
 		elif 'shared2' in url_video:
-			matriz = obtem_shared2(url_video)			
-		elif 'Dropvideo' in url_video:
-			matriz = obtem_url_dropvideo(url_video)			
+			matriz = obtem_shared2(url_video)						
 		else:
 			print "Falha: " + str(url_video)
 		print matriz
@@ -858,7 +946,8 @@ def player(name,url,iconimage):
 	except:
 		print "erro ao abrir o video"
 		print url_video
-		pass
+		pass		
+
 
 
 def pesquisa_serie_sd():
@@ -919,7 +1008,16 @@ def pesquisa_cinefilmes(url):
 		search = keyb.getText() #Variavel search fica definida com o conteudo do formulario
 		parametro_pesquisa=urllib.quote(search) #parametro_pesquisa faz o quote da expressao search, isto Ã©, escapa os parametros necessarios para ser incorporado num endereÃ§o url
 		url = 'http://www.cinefilmeshd.com/?s=' + str(parametro_pesquisa) #nova definicao de url. str forÃ§a o parametro de pesquisa a ser uma string
-		filmes_cinefilmeshd(url) #chama a funÃ§Ã£o listar_videos com o url definido em cima		
+		filmes_cinefilmeshd(url) #chama a funÃ§Ã£o listar_videos com o url definido em cima
+
+def pesquisa_filme_megafilmeshd():
+	keyb = xbmc.Keyboard('', 'Faça a busca por filmes')
+	keyb.doModal()
+	if (keyb.isConfirmed()):
+		search = keyb.getText()
+		parametro_pesquisa=urllib.quote(search)
+		url = 'http://www.megafilmesonlinehd.com/?s=' + str(parametro_pesquisa)
+		Filmes_megafilmeshd(url)		
 	  
 	  
 		###################################################################################	  
@@ -1169,7 +1267,25 @@ elif mode==35:
 	
 elif mode==36:
 	print ""
-	pesquisa_cinefilmes(url)	
+	pesquisa_cinefilmes(url)
+
+elif mode==37:
+	print ""
+	Megafilmeshd()
+
+elif mode==38:
+	print ""
+	Megafilmeshd_categorias()
+
+elif mode==39:
+	print ""
+	Filmes_megafilmeshd(url)
+	
+elif mode==40:
+	print ""
+	pesquisa_filme_megafilmeshd()	
+
+	
 
 	
 	
