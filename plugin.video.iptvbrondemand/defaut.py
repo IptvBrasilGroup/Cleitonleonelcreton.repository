@@ -32,7 +32,7 @@ except:
 h = HTMLParser.HTMLParser()
 
 
-versao = '1.4'
+versao = '1.5'
 addon_id = 'plugin.video.iptvbrondemand'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -68,7 +68,7 @@ def  filmes_hd_sd():
 	addLink("                                [B][COLOR red]FILMES E SÉRIES DE SITES DA NET[/COLOR][/B]",'',artfolder + '-')
 	addDir('[B]ARMAGEDOM FILMES[/B]','-',31,artfolder + 'icon.png')
 	addDirC('[B]CINEFILMES HD[/B]','-',20,artfolder + 'cinefilmes.png')
-	addDir('[B]MEGAFILMES ONLINE HD[/B]  [COLOR red]Em manutenção !!![/COLOR] ','-',37,artfolder + 'Movies-icon.png')	
+	addDir('[B]MEGAFILMES ONLINE HD[/B]  [COLOR red]Em manutenção !!![/COLOR] ','-',37,artfolder + 'mega.png')	
 	
 
 def  temporarios():
