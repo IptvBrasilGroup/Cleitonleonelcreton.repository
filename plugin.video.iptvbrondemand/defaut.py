@@ -742,7 +742,7 @@ def obtem_url_dropvideo(url):
 	except:
 		pass
 		
-		
+
 def obtem_neodrive(url):
 	codigo_fonte = abrir_url(url)
 	
@@ -763,14 +763,34 @@ def obtem_videopw(url):
 		return ["-","-"]
 		
 		
-def obtem_videopw2(url):
+def obtem_vidig(url):
 	codigo_fonte = abrir_url(url)
-	
 	try:
-		url_video = re.findall(r'var vurl2 = "(.*?)";',codigo_fonte)[0]
+		soup = BeautifulSoup(codigo_fonte)
+		lista = soup.findAll('script')
+		js = str(lista[9]).replace('<script>',"").replace('</script>',"")
+		sUnpacked = jsunpack.unpack(js)
+		print sUnpacked
+		url_video = re.findall(r'var vurl2="(.*?)";', sUnpacked)
+		url_video = str(url_video).replace("['","").replace("']","")
 		return [url_video,"-"]
 	except:
-		return ["-","-"]
+		pass
+		
+		
+def obtem_vidzi(url):
+	codigo_fonte = abrir_url(url)
+	try:
+		soup = BeautifulSoup(codigo_fonte)
+		lista = soup.findAll('script')
+		js = str(lista[9]).replace('<script>',"").replace('</script>',"")
+		sUnpacked = jsunpack.unpack(js)
+		print sUnpacked
+		url_video = re.findall(r'var vurl2="(.*?)";', sUnpacked)
+		url_video = str(url_video).replace("['","").replace("']","")
+		return [url_video,"-"]
+	except:
+		pass		
 		
 
 def obtem_shared2(url):
@@ -802,7 +822,8 @@ def player(name,url,iconimage):
 		neodrive = r'src="(.*?neodrive.*?/embed.*?)"'
 		neomega = r'src=".*?neodrive.*?id=(.*?)"'
 		videobis = r'SRC="(.*?videobis.*?/embed.*?)"'
-		videopw2 = r'src=".*?videopw.*?/e/(.*?)"'
+		vidig = r'src=".*?vidigvideo.*?/(.*?)"'
+		vidzi = r'src=".*?vidzi.*?/(.*?)"'		
 		videopw = r'src=".*?videopw.*?id=(.*?)"'
 		shared2 = r'src=".*?shared2.*?/embed/(.*?)"'
 		cloudzilla = r'cloudzilla.php.id=(.*?)"'
@@ -835,10 +856,17 @@ def player(name,url,iconimage):
 			pass
 
 		try:
-			links.append('http://videopw.com/e/'+re.findall(videopw2, codigo_fonte)[0])
-			hosts.append('[B][COLOR green]Videopw[/COLOR][/B]')
+			links.append('http://vidigvideo.com/'+re.findall(vidig, codigo_fonte)[0])
+			hosts.append('[B][COLOR green]Vidig[/COLOR][/B]')
 		except:
-			pass			
+			pass
+
+		try:
+			links.append('http://vidzi.tv/'+re.findall(vidzi, codigo_fonte)[0])
+			hosts.append('[B][COLOR green]Vidzi[/COLOR][/B]')
+		except:
+			pass
+			
 			
 		try:
 			links.append('http://www.shared2.net/embed/'+re.findall(shared2, codigo_fonte)[0])
@@ -898,8 +926,10 @@ def player(name,url,iconimage):
 			matriz = obtem_neodrive(url_video)
 		elif 'videopw' in url_video:
 			matriz = obtem_videopw(url_video)
-		elif 'videopw2' in url_video:
-			matriz = obtem_videopw2(url_video)			
+		elif 'vidig' in url_video:
+			matriz = obtem_vidig(url_video)
+		elif 'vidzi' in url_video:
+			matriz = obtem_vidzi(url_video)			
 		elif 'shared2' in url_video:
 			matriz = obtem_shared2(url_video)						
 		else:
