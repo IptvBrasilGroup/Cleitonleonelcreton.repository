@@ -32,7 +32,7 @@ except:
 h = HTMLParser.HTMLParser()
 
 
-versao = '1.6'
+versao = '1.7'
 addon_id = 'plugin.video.iptvbrondemand'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -41,6 +41,7 @@ fanart = addonfolder + '/fanart.jpg'
 filmes_base = 'http://www.filmesonline2.com/category/acao/'
 series_base = 'http://assistirserieshd.com/'
 art = 'https://copy.com/Vq3DQcVHwXf6thbC'
+links = 'https://copy.com/'
 ver_intro = True
  
 
@@ -56,41 +57,41 @@ def  menus():
 	intro = Ver_intro()        		
 	dialog = xbmcgui.Dialog()
 	dialog.ok("SEJAM BEM VINDOS", "[B]PRONTOS PARA CURTIREM OS MELHORES CANAIS DE TV,FILMES,SÉRIES,DESENHOS,ANIMES,FUTEBOL E LUTAS DO UFC EM CASA ?                                                                                               ENTÃO PREPAREM A PIPOCA QUE É HORA DO SHOW !!![/B]")
-	addDir('[B][COLOR red]FILMES HD/SD[/COLOR][/B]','-',24,artfolder + 'Movies-icon.png')	
-	addDirM('[B][COLOR red]SÉRIES HD/SD[/COLOR][/B]','-',5,artfolder + 'Icon_series.png')	
-	addDir('[B][COLOR red]EVENTOS AO VIVO[/COLOR][/B]','-',6,artfolder + 'live-events.png')
-	addDir('[B][COLOR red]ANIMAÇÃO[/COLOR][/B]','-',15,artfolder + 'animacao.png')	
+	addDir('[B][COLOR green]*[/COLOR][/B][B][COLOR red]FILMES HD/SD[/COLOR][/B]','-',24,artfolder + 'Movies-icon.png')	
+	addDirM('[B][COLOR green]*[/COLOR][/B][B][COLOR red]SÉRIES HD/SD[/COLOR][/B]','-',5,artfolder + 'Icon_series.png')	
+	addDir('[B][COLOR green]*[/COLOR][/B][B][COLOR red]TV AO VIVO[/COLOR][/B]','-',6,artfolder + 'live-events.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B][COLOR red]ANIMAÇÃO[/COLOR][/B]','-',15,artfolder + 'animacao.png')	
 	
 	
 def  filmes_hd_sd():
-	addDir('[B]FILMES HD[/B]','-',2,artfolder + 'Movies-icon.png')
-	addDir('[B]FILMES SD[/B]','-',4,artfolder + 'Movies-icon.png')
-	addLink("                                [B][COLOR red]FILMES E SÉRIES DE SITES DA NET[/COLOR][/B]",'',artfolder + '-')
-	addDir('[B]ARMAGEDOM FILMES[/B]','-',31,artfolder + 'icon.png')
-	addDirC('[B]CINEFILMES HD[/B]','-',20,artfolder + 'cinefilmes.png')
-	addDir('[B]MEGAFILMES ONLINE HD[/B]  [COLOR red]Em manutenção !!![/COLOR] ','-',37,artfolder + 'mega.png')	
+	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES HD[/B]','-',2,artfolder + 'Movies-icon.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES SD[/B]','-',4,artfolder + 'Movies-icon.png')
+	addLink("                                     [B][COLOR red]ADDONS RELACIONADOS[/COLOR][/B]",'',artfolder + '-')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]ARMAGEDOM FILMES[/B]','-',31,artfolder + 'icon.png')
+	addDirC('[B][COLOR green]*[/COLOR][/B][B]CINEFILMES HD[/B]','-',20,artfolder + 'cinefilmes.jpg')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]MEGAFILMES ONLINE HD[/B]  [COLOR red]Em manutenção !!![/COLOR] ','-',37,artfolder + 'mega.png')	
 	
 
 def  temporarios():
 	dialog = xbmcgui.Dialog()
 	dialog.ok("FILMES VARIADOS", "[B]OS FILMES A SEGUIR SÃO DE BAIXA QUALIDADE,SE DESEJAR ASSISTIR EM QUALIDADE FULL HD VÁ PARA A OPÇÃO FILMES HD,OU SE DESEJAR CONTINUAR CLICK EM OK!!![/B]")
-	addDir('[B]FILMES VARIADOS[/B]','https://copy.com/hmyyzK71z8yMvo8S?download=1',3,artfolder + 'Movies-icon.png')
-	addDir('[B]FILMES SD[/B]','-',8,artfolder + '2k.png')	
+	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES VARIADOS[/B]','https://copy.com/hmyyzK71z8yMvo8S?download=1',3,artfolder + 'Movies-icon.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES SD[/B]','-',8,artfolder + '2k.png')	
 
 	
 def  series():
 	dialog = xbmcgui.Dialog()
-	dialog.ok("SÉRIES ON DEMAND", "[B]                   SUAS SÉRIES FAVORITAS A UM CLICK!!![/B]")
-	addDirM('[B]SÉRIES HD[/B]','-',16,artfolder + 'Icon_series.png')
-	addDirM('[B]SÉRIES HD POR LETRA[/B]','-',23,artfolder + 'Icon_series.png')	
-	addDir('[B]SÉRIES SD[/B]','http://www.armagedomfilmes.biz/?cat=21|1',10,artfolder + 'Icon_series.png')	
-	addDirM('[B]PESQUISAR SÉRIES HD[/B]','-',30,artfolder + 'lupa.png')
-	addDir('[B]PESQUISAR SÉRIES SD[/B]','-',14,artfolder + 'lupa.png')	
+	dialog.ok("SÉRIES ON DEMAND", "[B]               SUAS SÉRIES FAVORITAS A UM CLICK!!![/B]")
+	addDirM('[B][COLOR green]*[/COLOR][/B][B]SÉRIES HD[/B]','-',16,artfolder + 'Icon_series.png')
+	addDirM('[B][COLOR green]*[/COLOR][/B][B]SÉRIES HD POR LETRA[/B]','-',23,artfolder + 'Icon_series.png')	
+	addDir('[B][COLOR green]*[/COLOR][/B][B]SÉRIES SD[/B]','http://www.armagedomfilmes.biz/?cat=21|1',10,artfolder + 'Icon_series.png')	
+	addDirM('[B][COLOR green]*[/COLOR][/B][B]PESQUISAR SÉRIES HD[/B]','-',30,artfolder + 'lupa.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]PESQUISAR SÉRIES SD[/B]','-',14,artfolder + 'lupa.png')	
 	
 
 def  categorias():
 	dialog = xbmcgui.Dialog()
-	dialog.ok("FILMES SOB DEMANDA", "[B]SELECIONE A SEGUIR A CATEGORIA DO FILME DESEJADO!!![/B]")
+	dialog.ok("FILMES SOB DEMANDA", "[B]       SELECIONE A CATEGORIA DO FILME DESEJADO !!![/B]")
 	addDir('[B]AÇÃO[/B]','https://copy.com/Iyt3UBHMKPehfPPs?download=1',3,artfolder + 'acao.jpg')
 	addDir('[B]ANIMAÇÃO[/B]','https://copy.com/rdkdvoVAFOoD6FVu?download=1',3,artfolder + 'animacao.jpg')
 	addDir('[B]AVENTURA[/B]','https://copy.com/RK9DFiXkF6BRenUv?download=1',3,artfolder + 'AVENTURA.jpg')
@@ -168,18 +169,25 @@ def Megafilmeshd_categorias():
 	addDir('[B]FILMES LEGENDADOS[/B]','http://www.megafilmesonlinehd.com/legendados/',39,artfolder + 'Movies-icon.png')
 	
 	
-def  eventos_ao_vivo():	
+def  tv_ao_vivo():	
 	dialog = xbmcgui.Dialog()
-	dialog.ok("EVENTOS ESPORTIVOS","[B]                     ASSISTA Á JOGOS E LUTAS AO VIVO!!![/B]")
-	addDir('[B]FUTEBOL[/B]','https://copy.com/TOyFN7PDhGvb9nVf?download=1',3,artfolder + 'futebol.png')
-	addDir('[B]LUTAS[/B]','https://copy.com/dvX6pkFBatyi2Q6T?download=1',3,artfolder + 'lutas.png')
+	dialog.ok("CANAIS DE TV","[B]ASSISTA CANAIS DE TV DO BRASIL E DO MUNDO AQUI !!![/B]")
+	addDir('[B][COLOR green]*[/COLOR][/B][B]TV ABERTA[/B]',links + 'wwRMUE88YpbBHq1R?download=1',3,'http://tvabcd.com.br/system/uploads/ck/1/images/assistir-tv-online.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]ESPORTES[/B]',links + '4pDaNzKgy0gpgAwm?download=1',3,'http://tvabcd.com.br/system/uploads/ck/1/images/assistir-tv-online.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]JORNALISMO[/B]',links + 'aZLzoTmIFohZtir0?download=1',3,'http://tvabcd.com.br/system/uploads/ck/1/images/assistir-tv-online.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES[/B]',links + 'jup1OwG1MZT7UsvR?download=1',3,'http://tvabcd.com.br/system/uploads/ck/1/images/assistir-tv-online.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]DOCUMENTÁRIOS[/B]',links + 'c1ydCNbYq7t9S6kv?download=1',3,'http://tvabcd.com.br/system/uploads/ck/1/images/assistir-tv-online.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]INFANTIL[/B]',links + 'esYvzMA88EPCZf3L?download=1',3,'http://tvabcd.com.br/system/uploads/ck/1/images/assistir-tv-online.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]MÚSICA[/B]',links + 'wqXSmdse6ZfplZTh?download=1',3,'http://tvabcd.com.br/system/uploads/ck/1/images/assistir-tv-online.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]RELIGIOSO[/B]',links + '3Zyy7d7LEfZVlgr3?download=1',3,'http://tvabcd.com.br/system/uploads/ck/1/images/assistir-tv-online.png')
+	
 	
 	
 def Animacao():	
 	dialog = xbmcgui.Dialog()
-	dialog.ok("ASSISTA AQUI:", "[B]          OS MELHORES ANIMES E DESENHOS 24 HORAS!!![/B]")
-	addDir('[B]ANIMES[/B]','-',25,artfolder + 'anime.png')	
-	addDir('[B]DESENHOS 24hrs[/B]','https://copy.com/0ZeS9pyD92GXM9rM?download=1',3,artfolder + 'Desenhos.png')
+	dialog.ok("ASSISTA AQUI:", "[B]      OS MELHORES ANIMES E DESENHOS 24 HORAS!!![/B]")
+	addDir('[B][COLOR green]*[/COLOR][/B][B]ANIMES[/B]','-',25,artfolder + 'anime.png')	
+	addDir('[B][COLOR green]*[/COLOR][/B][B]DESENHOS 24hrs[/B]','https://copy.com/0ZeS9pyD92GXM9rM?download=1',3,artfolder + 'Desenhos.png')
 
 
 def Animes():
@@ -1185,7 +1193,7 @@ elif mode==5:
 	
 elif mode==6:
 	print ""
-	eventos_ao_vivo()
+	tv_ao_vivo()
 
 elif mode==7:
 	print ""
