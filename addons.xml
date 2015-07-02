@@ -55,7 +55,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.iptvbrondemand" name="[B][COLOR red]IPTV Brasil onDemand[/COLOR][/B]" version="1.7" provider-name="[B][COLOR green]IPTV Brasil[/COLOR][/B]">
+<addon id="plugin.video.iptvbrondemand" name="[B][COLOR red]IPTV Brasil onDemand[/COLOR][/B]" version="1.8" provider-name="[B][COLOR green]IPTV Brasil[/COLOR][/B]">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
 	<import addon="script.module.urlresolver" version="1.0.0"/>

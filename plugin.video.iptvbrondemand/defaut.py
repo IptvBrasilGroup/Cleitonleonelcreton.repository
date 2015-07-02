@@ -32,7 +32,7 @@ except:
 h = HTMLParser.HTMLParser()
 
 
-versao = '1.7'
+versao = '1.8'
 addon_id = 'plugin.video.iptvbrondemand'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -41,6 +41,7 @@ fanart = addonfolder + '/fanart.jpg'
 filmes_base = 'http://www.filmesonline2.com/category/acao/'
 series_base = 'http://assistirserieshd.com/'
 art = 'https://copy.com/Vq3DQcVHwXf6thbC'
+novelas_base = 'https://assistirnovelas.tv/'
 links = 'https://copy.com/'
 ver_intro = True
  
@@ -60,16 +61,14 @@ def  menus():
 	addDir('[B][COLOR green]*[/COLOR][/B][B][COLOR red]FILMES HD/SD[/COLOR][/B]','-',24,artfolder + 'Movies-icon.png')	
 	addDirM('[B][COLOR green]*[/COLOR][/B][B][COLOR red]SÉRIES HD/SD[/COLOR][/B]','-',5,artfolder + 'Icon_series.png')	
 	addDir('[B][COLOR green]*[/COLOR][/B][B][COLOR red]TV AO VIVO[/COLOR][/B]','-',6,artfolder + 'live-events.png')
-	addDir('[B][COLOR green]*[/COLOR][/B][B][COLOR red]ANIMAÇÃO[/COLOR][/B]','-',15,artfolder + 'animacao.png')	
+	addDir('[B][COLOR green]*[/COLOR][/B][B][COLOR red]ANIMAÇÃO[/COLOR][/B]','-',15,artfolder + 'animacao.png')
+	addDirM('[B][COLOR green]*[/COLOR][/B][B][COLOR red]PROGRAMAS DE TV[/COLOR][/B]','-',42,'http://www.propertytrader.ae/images/products/editor_images/tv.png')	
 	
 	
 def  filmes_hd_sd():
 	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES HD[/B]','-',2,artfolder + 'Movies-icon.png')
 	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES SD[/B]','-',4,artfolder + 'Movies-icon.png')
-	addLink("                                     [B][COLOR red]ADDONS RELACIONADOS[/COLOR][/B]",'',artfolder + '-')
-	addDir('[B][COLOR green]*[/COLOR][/B][B]ARMAGEDOM FILMES[/B]','-',31,artfolder + 'icon.png')
-	addDirC('[B][COLOR green]*[/COLOR][/B][B]CINEFILMES HD[/B]','-',20,artfolder + 'cinefilmes.jpg')
-	addDir('[B][COLOR green]*[/COLOR][/B][B]MEGAFILMES ONLINE HD[/B]  [COLOR red]Em manutenção !!![/COLOR] ','-',37,artfolder + 'mega.png')	
+	addDir('[B][COLOR red]ADDONS RELACIONADOS[/COLOR][/B]','-',45,artfolder + 'Movies-icon.png')	
 	
 
 def  temporarios():
@@ -214,7 +213,117 @@ def Megafilmeshd():
 	addDir('[B]CATEGORIAS[/B]','-',38,artfolder + 'Movies-icon.png')
 	addDir('[B]LANÇAMENTOS[/B]','http://www.megafilmesonlinehd.com/filmes-lancamentos-exclusivos',39,artfolder + 'Movies-icon.png')
 	addDir('[B]BLURAY[/B]','http://www.megafilmesonlinehd.com/bluray/',39,artfolder + 'Movies-icon.png')
-	addDir('[B]PESQUISAR[/B]','-',40,artfolder + 'lupa.png')	
+	addDir('[B]PESQUISAR[/B]','-',40,artfolder + 'lupa.png')
+	
+def Addons():
+	addDir('[B][COLOR green]*[/COLOR][/B][B]ARMAGEDOM FILMES[/B]','-',31,artfolder + 'icon.png')
+	addDirC('[B][COLOR green]*[/COLOR][/B][B]CINEFILMES HD[/B]','-',20,artfolder + 'cinefilmes.jpg')	
+	addDir('[B][COLOR green]*[/COLOR][/B][B]MEGAFILMES ONLINE HD[/B]  [COLOR red]Em manutenção !!![/COLOR] ','-',37,artfolder + 'mega.png')
+
+
+
+def Listar_categorias_novelas(url=novelas_base):
+ print url
+ html = abrir_url2(url)
+ #html = html.encode('ascii','xmlcharrefreplace')
+ soup = BeautifulSoup(html)
+
+ a = []
+ menu = soup("div", { "id" : "Menu" })[1]
+ #print menu
+ links = menu("a")
+ #resultados = content.findAll("td",  { "width" : "1%" })
+ for link in links:
+  if not link['href'] == '#' and not html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')) == 'Pagina Inicial':
+   #print link['href']
+   addDirM(html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')),link['href'],43,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png',len(links),True)
+ xbmcplugin.setContent(int(sys.argv[1]), 'movies')
+ xbmc.executebuiltin('Container.SetViewMode(51)')
+
+
+
+def Listar_episodios_novelas(url):
+ print url
+ html = abrir_url2(url)
+ #html = unicode(html, 'ascii', errors='ignore')
+ soup = BeautifulSoup(html)
+
+ a = []
+ categorias = soup("div", { "class" : "CategoriasLista" })[0]
+ #print categorias
+ episodios = categorias("div", { "class" : "Item" })
+ for episodio in episodios:
+  img = episodio.img['src']
+  titulo = html_replace_clean(episodio.img['alt'].encode('ascii','xmlcharrefreplace'))#episodio.img['alt']
+  url = episodio.a['href']
+  #addDir(name,url,mode,iconimage,total=0,pasta=True)
+  addDirM(titulo,url,44,img,len(episodios),False)
+ try:
+  links = soup("div", { "class" : "Botaos" })[0]('a')
+  for link in links:
+   if not link['href'] == url:
+    url = link['href']
+  if len(episodios) == 42:
+   addDirM("Proxima Pagina >>",url,43,'',len(episodios)+1)
+  else:
+   addDirM("<< Pagina Anterior",url,43,'',len(episodios)+1)
+ except:
+  pass
+ xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
+ xbmc.executebuiltin('Container.SetViewMode(503)')
+ 
+ 
+
+def Resolve_episodio_novelas(url):
+	#print url
+	pg = 0
+	mensagemprogresso = xbmcgui.DialogProgress()
+	mensagemprogresso.create('Trabalhando', 'Gerando playlist','Por favor aguarde...')
+	pg += 10
+	mensagemprogresso.update(pg)
+	html = abrir_url(url)
+	soup = BeautifulSoup(html)
+	playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+	playlist.clear()
+	pg += 10
+	mensagemprogresso.update(pg)
+	br = mechanize.Browser()
+	cj = cookielib.LWPCookieJar()
+	br.set_cookiejar(cj)
+	br.set_handle_equiv(True)
+	br.set_handle_gzip(True)
+	br.set_handle_redirect(True)
+	br.set_handle_referer(True)
+	br.set_handle_robots(False)
+	br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+	br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+	pg += 10
+	mensagemprogresso.update(pg)
+	br.open('https://assistirnovelas.tv')
+	form = base64.b64decode('PGZvcm0gYWN0aW9uPSJodHRwczovL2Fzc2lzdGlybm92ZWxhcy50di9Mb2dpblVzdWFyaW8ucGhwIiBpZD0iZm9ybTEiIG1ldGhvZD0icG9zdCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT5FLW1haWw8L2xpPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGk+PGlucHV0IHR5cGU9InRleHQiIHZhbHVlPSIiIG5hbWU9ImVtYWlsIiBjbGFzcz0iQ2FtcG9Mb2dpbiIgcGxhY2Vob2xkZXI9IlNldSBlLW1haWwiPjwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT5TZW5oYTwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT48aW5wdXQgdmFsdWU9IiIgbmFtZT0ic2VuaGEiIGNsYXNzPSJDYW1wb0xvZ2luIiBwbGFjZWhvbGRlcj0iU3VhIHNlbmhhIiB0eXBlPSJwYXNzd29yZCI+PC9saT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpPjxpbnB1dCB0eXBlPSJzdWJtaXQiIGNsYXNzPSJMb2dpbkluaWNpbyIgdmFsdWU9IkVudHJhciI+PC9saT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpPjxhIGhyZWY9Imh0dHBzOi8vYXNzaXN0aXJub3ZlbGFzLnR2L2NhZGFzdHJvLnBocCI+UmVnaXN0cmFyPC9hPjwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT48YSBocmVmPSJodHRwczovL2Fzc2lzdGlybm92ZWxhcy50di9sZW1icmFyX3NlbmhhLnBocCI+TGVtYnJhciBzZW5oYTwvYT48L2xpPg0KICAgICAgICAgICAgICAgICAgPC9mb3JtPg==')
+	res = mechanize._form.ParseString(form, "https://assistirnovelas.tv")
+	br.form = res[1]
+	#br.select_form(nr=0)
+	br.form['senha']=base64.b64decode('MTIzNDU2')
+	br.form['email']=base64.b64decode('YXJsZWlyYS5jYXN0cm9AZ21haWwuY29t')
+	br.submit()
+	pg += 10
+	mensagemprogresso.update(pg)
+	page = br.open(url).read()
+	links = re.findall("file':.'(.*?mp4.*?)'",page)
+	pg += 10
+	mensagemprogresso.update(pg)
+	if links:
+		for link in links:
+		    listitem = xbmcgui.ListItem('Epsodio', thumbnailImage='')
+		    listitem.setInfo('video', {'Title': 'Episodio'})
+		    playlist.add(url=link, listitem=listitem, index=6)
+		mensagemprogresso.update(100)
+		xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(playlist)
+	else:
+		mensagemprogresso.update(100)
+		dialog = xbmcgui.Dialog()
+		dialog.ok("Indisponivel", "Este ainda não esta disponivel, tente novamente em breve.") 
 	
 	
 
@@ -496,7 +605,7 @@ def Listar_programacao(url=filmes_base):
    #print link['href']
    addDir(html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')),link['href'],9,'https://copy.com/9aPDiAF23J6XKems?download=1',len(links),True)
  xbmcplugin.setContent(int(sys.argv[1]), 'movies')
- xbmc.executebuiltin('Container.SetViewMode(51)')
+ xbmc.executebuiltin('Container.SetViewMode(51)') 
 
  
 def Listar_episodios(url):
@@ -1321,7 +1430,23 @@ elif mode==39:
 	
 elif mode==40:
 	print ""
-	pesquisa_filme_megafilmeshd()	
+	pesquisa_filme_megafilmeshd()
+
+elif mode==42:
+	print ""
+	Listar_categorias_novelas()
+
+elif mode==43:
+	print ""
+	Listar_episodios_novelas(url)
+
+elif mode==44:
+	print ""
+	Resolve_episodio_novelas(url)
+
+elif mode==45:
+	print ""
+	Addons()	
 
 	
 
