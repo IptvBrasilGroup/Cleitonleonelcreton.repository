@@ -24,7 +24,6 @@ import mechanize, cookielib, base64
 import re, htmlentitydefs
 import urlresolver
 import jsunpack
-from bs4 import BeautifulSoup
 try:
     import json
 except:
@@ -32,7 +31,7 @@ except:
 h = HTMLParser.HTMLParser()
 
 
-versao = '1.9'
+versao = '1.10'
 addon_id = 'plugin.video.iptvbrondemand'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -410,7 +409,7 @@ def Listar_episodios2(url):
 def Resolve_episodio(url):
 	print url
 	html = abrir_url(url)
-	xml_url = "http://anitube.xpg.uol.com.br/nuevo/econfig.php?key=" + re.findall(r'src="http://anitube.xpg.uol.com.br/embed/(.+?)"',html)[0]
+	xml_url = "http://anitube.xpg.uol.com.br/nuevo/econfig.php?key=" + re.findall(r'src="http://anitubebr.xpg.uol.com.br/embed/(.+?)"',html)[0]
 	xml = abrir_url(xml_url)
 	soup = BeautifulSoup(xml)
 	file_url = ''

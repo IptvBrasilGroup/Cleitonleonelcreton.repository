@@ -55,7 +55,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.iptvbrondemand" name="[B][COLOR red]IPTV Brasil onDemand[/COLOR][/B]" version="1.9" provider-name="[B][COLOR green]IPTV Brasil[/COLOR][/B]">
+<addon id="plugin.video.iptvbrondemand" name="[B][COLOR red]IPTV Brasil OnDemand[/COLOR][/B]" version="1.10" provider-name="[B][COLOR blue]Ceiton Leonel Creton[/COLOR][/B]">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
 	<import addon="script.module.urlresolver" version="1.0.0"/>
@@ -69,7 +69,7 @@
   <extension point="xbmc.addon.metadata">
     <language>en</language>
     <platform>all</platform>
-    <summary lang="en">IPTV Brasil onDemand</summary>
+    <summary lang="en">IPTV Brasil OnDemand</summary>
     <description lang="en">Assista os sucessos do cinema suas sÃ©ries favoritas,jogos e lutas do ufc no conforto da sua casa,tudo ao alcance de um click.Agora com mais opÃ§Ãµes de intretenimento,confira na sessÃ£o filmes HD/SD ...</description>
     <platform>all</platform>
   </extension>
