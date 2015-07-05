@@ -77,14 +77,22 @@ def  temporarios():
 	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES VARIADOS[/B]','https://copy.com/hmyyzK71z8yMvo8S?download=1',3,artfolder + 'Movies-icon.png')
 	addDir('[B][COLOR green]*[/COLOR][/B][B]FILMES SD[/B]','-',8,artfolder + '2k.png')	
 
-	
-def  series():
+
+def  series_qualidade():
 	dialog = xbmcgui.Dialog()
 	dialog.ok("SÉRIES ON DEMAND", "[B]               SUAS SÉRIES FAVORITAS A UM CLICK!!![/B]")
+	addDirM('[B][COLOR green]*[/COLOR][/B][B]SÉRIES HD[/B]','-',49,artfolder + 'Icon_series.png')
+	addDir('[B][COLOR green]*[/COLOR][/B][B]SÉRIES SD[/B]','-',50,artfolder + 'Icon_series.png')
+
+
+def  series_qualidade_hd():	
 	addDirM('[B][COLOR green]*[/COLOR][/B][B]SÉRIES HD[/B]','-',16,artfolder + 'Icon_series.png')
-	addDirM('[B][COLOR green]*[/COLOR][/B][B]SÉRIES HD POR LETRA[/B]','-',23,artfolder + 'Icon_series.png')	
-	addDir('[B][COLOR green]*[/COLOR][/B][B]SÉRIES SD[/B]','http://www.armagedomfilmes.biz/?cat=21|1',10,artfolder + 'Icon_series.png')	
+	addDirM('[B][COLOR green]*[/COLOR][/B][B]SÉRIES HD POR LETRA[/B]','-',23,artfolder + 'Icon_series.png')
 	addDirM('[B][COLOR green]*[/COLOR][/B][B]PESQUISAR SÉRIES HD[/B]','-',30,artfolder + 'lupa.png')
+
+	
+def  series_qualidade_sd():
+	addDir('[B][COLOR green]*[/COLOR][/B][B]SÉRIES SD[/B]','http://www.armagedomfilmes.biz/?cat=21|1',10,artfolder + 'Icon_series.png')
 	addDir('[B][COLOR green]*[/COLOR][/B][B]PESQUISAR SÉRIES SD[/B]','-',14,artfolder + 'lupa.png')	
 	
 
@@ -1331,7 +1339,7 @@ elif mode==4:
 	
 elif mode==5:
 	print ""
-	series()
+	series_qualidade()
 	
 elif mode==6:
 	print ""
@@ -1491,7 +1499,15 @@ elif mode==47:
 
 elif mode==48:
 	print ""
-	Listar_novelas()	
+	Listar_novelas()
+
+elif mode==49:
+	print ""
+	series_qualidade_hd()
+
+elif mode==50:
+	print ""
+	series_qualidade_sd()	
 
 	
 
