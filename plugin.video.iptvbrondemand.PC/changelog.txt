@@ -1,2 +1,7 @@
 <30/04/2015>
-* Lançamento
+* Agradecimentos ao grupo SatTotal por dar um espaço a este projeto,
+em especial aos adms do grupo.
+
+* Versão 1.0 Lançamento!!!
+* Versão 1.1 correção de bugs!!!
+* Versão 1.2 estável...

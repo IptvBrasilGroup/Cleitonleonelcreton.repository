@@ -33,7 +33,7 @@ except:
 h = HTMLParser.HTMLParser()
 
 
-versao = '1.1'
+versao = '1.2'
 addon_id = 'plugin.video.iptvbrondemand.PC'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -365,11 +365,11 @@ def Resolve_episodio_novelas(url):
     pg += 10
     mensagemprogresso.update(pg)
     page = br.open(url).read()
-    iframe = re.findall("var url = '(.*?)'", page)[0]+"html5iframe/"
+    iframe = re.findall("var url = '(.*?)'",page)[0]+"html5iframe/"
     print iframe
     page1 = br.open(iframe).read()
     print page1
-    links = re.findall("file:.'(http.*?\.mp4\?wmsAuthSign=.*?)',", page1)
+    links = re.findall("'(.*?)',", page1)
     pg += 10
     mensagemprogresso.update(pg)
     if links:
@@ -478,7 +478,7 @@ def Pesquisa():
 		search = keyb.getText()
 		parametro_pesquisa=urllib.quote(search)
 		url = 'http://anitube.xpg.uol.com.br/search/?search_id=' + str(parametro_pesquisa)
-		Listar_episodios(url)	
+		Listar_episodios2(url)	
 	
 	
 def Listar_categorias_series(url=series_base):
