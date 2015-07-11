@@ -55,7 +55,7 @@
     </extension>
 </addon>
 
-<addon id="plugin.video.iptvbrondemand.mobile" name="[B][COLOR red]OnDemand mobile[/COLOR][/B]" version="1.0" provider-name="[B][COLOR blue]Ceiton Leonel Creton[/COLOR][/B]">
+<addon id="plugin.video.iptvbrondemand.mobile" name="[B][COLOR red]OnDemand mobile[/COLOR][/B]" version="1.1" provider-name="[B][COLOR blue]Ceiton Leonel Creton[/COLOR][/B]">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
 	<import addon="script.module.urlresolver" version="1.0.0"/>

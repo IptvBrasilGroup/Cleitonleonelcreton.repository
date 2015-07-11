@@ -31,7 +31,7 @@ except:
 h = HTMLParser.HTMLParser()
 
 
-versao = '1.0'
+versao = '1.1'
 addon_id = 'plugin.video.iptvbrondemand.mobile'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -203,131 +203,159 @@ def Addons():
 	
 	
 def Tv_Gravada():
-	addDirM('[B][COLOR green]*[/COLOR][/B][B]TV GRAVADA[/B]','-',42,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png')
-	addDirM('[B][COLOR green]*[/COLOR][/B][B]PESQUISAR PROGRAMAS[/B]','-',47,artfolder + 'lupa.png')
+	addDirM('[B][COLOR green]*[/COLOR][/B][B]TV GRAVADA[/B]','-',51,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png')
 
 
-def Listar_categorias_novelas(url=novelas_base):
- print url
- html = abrir_url2(url)
- #html = html.encode('ascii','xmlcharrefreplace')
- soup = BeautifulSoup(html)
+def Programas_tv():
+    #addDirD(name, url, mode, iconimage, total=0, pasta=True, plot='', fanart=''):
+    addDirD("[B]NOVELAS[/B]","0",42,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png')	
+    addDirD("[B]SÉRIES[/B]","1",53,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png')
+    addDirD("[B]JORNALISMO[/B]","2",42,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png')
+    addDirD("[B]VARIEDADES[/B]","3",42,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png')
+    addDirD("[B]ESPORTES[/B]","4",42,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png')
+    xbmcplugin.setContent(int(sys.argv[1]), 'movies')
+    xbmc.executebuiltin('Container.SetViewMode(51)')	
+	
 
- a = []
- menu = soup("div", { "id" : "Menu" })[1]
- #print menu
- links = menu("a")
- #resultados = content.findAll("td",  { "width" : "1%" })
- for link in links:
-  if not link['href'] == '#' and not html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')) == 'Pagina Inicial':
-   #print link['href']
-   addDirM(html_replace_clean(link.text.encode('ascii','xmlcharrefreplace')),link['href'],43,'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png',len(links),True)
- xbmcplugin.setContent(int(sys.argv[1]), 'movies')
- xbmc.executebuiltin('Container.SetViewMode(51)')
- 
- 
-def Listar_novelas(url):
- print url
- html = abrir_url2(url)
- #html = unicode(html, 'ascii', errors='ignore')
- soup = BeautifulSoup(html)
+def Listar_categorias_novelas(url=novelas_base,cat=0):
+    print url
+    html = abrir_url2(url)
+    #html = html.encode('ascii','xmlcharrefreplace')
+    soup = BeautifulSoup(html)
 
- a = []
- categorias = soup("div", { "id" : "Conteudo" })[0]
- #print categorias
- episodios = categorias("div", { "class" : "Item" })
- for episodio in episodios:
-  img = episodio.img['src']
-  titulo = html_replace_clean(episodio.img['alt'].encode('ascii','xmlcharrefreplace'))#episodio.img['alt']
-  url = episodio.a['href']
-  #addDir(name,url,mode,iconimage,total=0,pasta=True)
-  addDirM(titulo,url,44,img,len(episodios),False)
- xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
- xbmc.executebuiltin('Container.SetViewMode(503)') 
+    a = []
+    menu = soup("div", {"class": "Box"})[int(cat)]
+    # print menu
+    links = menu("a")
+    #resultados = content.findAll("td",  { "width" : "1%" })
+    for link in links:
+        if not link['href'] == '#' and not html_replace_clean(link.text.encode('ascii', 'xmlcharrefreplace')) == 'Pagina Inicial':
+            # print link['href']
+            addDirD(html_replace_clean(link.text.encode('ascii', 'xmlcharrefreplace')), link['href'], 43, 'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png', len(links), True)
+    xbmcplugin.setContent(int(sys.argv[1]), 'movies')
+    xbmc.executebuiltin('Container.SetViewMode(51)')
+
+
+def Listar_categorias_novelas2(url=novelas_base,cat=0):
+    print url
+    html = abrir_url2(url)
+    #html = html.encode('ascii','xmlcharrefreplace')
+    soup = BeautifulSoup(html)
+
+    a = []
+    menu = soup("div", {"class": "Box"})[int(cat)]
+    # print menu
+    links = menu("a")
+    #resultados = content.findAll("td",  { "width" : "1%" })
+    for link in links:
+        if not link['href'] == '#' and not html_replace_clean(link.text.encode('ascii', 'xmlcharrefreplace')) == 'Pagina Inicial':
+            # print link['href']
+            addDirD(html_replace_clean(link.text.encode('ascii', 'xmlcharrefreplace')), link['href'], 52, 'http://www.apkdad.com/wp-content/uploads/2013/02/Live-TV-for-Android-Icon.png', len(links), True)
+    xbmcplugin.setContent(int(sys.argv[1]), 'movies')
+    xbmc.executebuiltin('Container.SetViewMode(51)')	
 
 
 def Listar_episodios_novelas(url):
- print url
- html = abrir_url2(url)
- #html = unicode(html, 'ascii', errors='ignore')
- soup = BeautifulSoup(html)
+    print url
+    html = abrir_url2(url)
+    #html = unicode(html, 'ascii', errors='ignore')
+    soup = BeautifulSoup(html)
 
- a = []
- categorias = soup("div", { "class" : "CategoriasLista" })[0]
- #print categorias
- episodios = categorias("div", { "class" : "Item" })
- for episodio in episodios:
-  img = episodio.img['src']
-  titulo = html_replace_clean(episodio.img['alt'].encode('ascii','xmlcharrefreplace'))#episodio.img['alt']
-  url = episodio.a['href']
-  #addDir(name,url,mode,iconimage,total=0,pasta=True)
-  addDirM(titulo,url,44,img,len(episodios),False)
- try:
-  links = soup("div", { "class" : "Botaos" })[0]('a')
-  for link in links:
-   if not link['href'] == url:
-    url = link['href']
-  if len(episodios) == 42:
-   addDirM("Proxima Pagina >>",url,43,'',len(episodios)+1)
-  else:
-   addDirM("<< Pagina Anterior",url,43,'',len(episodios)+1)
- except:
-  pass
- xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
- xbmc.executebuiltin('Container.SetViewMode(503)')
- 
+    a = []
+    categorias = soup("div", {"class": "Caixa"})[1]
+    #print categorias
+    episodios = categorias("div", {"class": "Imagem"})
+    for episodio in episodios:
+        img = episodio.a.img['src']
+	#print img
+        titulo = html_replace_clean(episodio.a.img['alt'].encode('ascii', 'xmlcharrefreplace'))  # episodio.img['alt']
+        url = episodio.a['href']
+        # addDir(name,url,mode,iconimage,total=0,pasta=True)
+        addDirD(titulo, url, 44, img, len(episodios), False)
+    paginacao = categorias("a", {"class": "right"})[0]
+    addDirD(html_replace_clean(paginacao.text.encode('ascii', 'xmlcharrefreplace')), paginacao['href'], 43, '', len(episodios) + 1)
+
+    xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
+    xbmc.executebuiltin('Container.SetViewMode(503)')
+
+
+def Episodios_novelas(url):
+    print url
+    html = abrir_url2(url)
+    #html = unicode(html, 'ascii', errors='ignore')
+    soup = BeautifulSoup(html)
+
+    a = []
+    categorias = soup("div", {"class": "Caixa"})[1]
+    #print categorias
+    episodios = categorias("div", {"class": "Imagem"})
+    for episodio in episodios:
+        img = episodio.a.img['src']
+	#print img
+        titulo = html_replace_clean(episodio.a.img['alt'].encode('ascii', 'xmlcharrefreplace'))  # episodio.img['alt']
+        url = episodio.a['href']
+        # addDir(name,url,mode,iconimage,total=0,pasta=True)
+        addDirD(titulo, url, 44, img, len(episodios), False)
+
+    xbmcplugin.setContent(int(sys.argv[1]), 'episodes')
+    xbmc.executebuiltin('Container.SetViewMode(503)')	
  
 
 def Resolve_episodio_novelas(url):
-	#print url
-	pg = 0
-	mensagemprogresso = xbmcgui.DialogProgress()
-	mensagemprogresso.create('Trabalhando', 'Gerando playlist','Por favor aguarde...')
-	pg += 10
-	mensagemprogresso.update(pg)
-	html = abrir_url(url)
-	soup = BeautifulSoup(html)
-	playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
-	playlist.clear()
-	pg += 10
-	mensagemprogresso.update(pg)
-	br = mechanize.Browser()
-	cj = cookielib.LWPCookieJar()
-	br.set_cookiejar(cj)
-	br.set_handle_equiv(True)
-	br.set_handle_gzip(True)
-	br.set_handle_redirect(True)
-	br.set_handle_referer(True)
-	br.set_handle_robots(False)
-	br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
-	br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
-	pg += 10
-	mensagemprogresso.update(pg)
-	br.open('https://assistirnovelas.tv')
-	form = base64.b64decode('PGZvcm0gYWN0aW9uPSJodHRwczovL2Fzc2lzdGlybm92ZWxhcy50di9Mb2dpblVzdWFyaW8ucGhwIiBpZD0iZm9ybTEiIG1ldGhvZD0icG9zdCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT5FLW1haWw8L2xpPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGk+PGlucHV0IHR5cGU9InRleHQiIHZhbHVlPSIiIG5hbWU9ImVtYWlsIiBjbGFzcz0iQ2FtcG9Mb2dpbiIgcGxhY2Vob2xkZXI9IlNldSBlLW1haWwiPjwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT5TZW5oYTwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT48aW5wdXQgdmFsdWU9IiIgbmFtZT0ic2VuaGEiIGNsYXNzPSJDYW1wb0xvZ2luIiBwbGFjZWhvbGRlcj0iU3VhIHNlbmhhIiB0eXBlPSJwYXNzd29yZCI+PC9saT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpPjxpbnB1dCB0eXBlPSJzdWJtaXQiIGNsYXNzPSJMb2dpbkluaWNpbyIgdmFsdWU9IkVudHJhciI+PC9saT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpPjxhIGhyZWY9Imh0dHBzOi8vYXNzaXN0aXJub3ZlbGFzLnR2L2NhZGFzdHJvLnBocCI+UmVnaXN0cmFyPC9hPjwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT48YSBocmVmPSJodHRwczovL2Fzc2lzdGlybm92ZWxhcy50di9sZW1icmFyX3NlbmhhLnBocCI+TGVtYnJhciBzZW5oYTwvYT48L2xpPg0KICAgICAgICAgICAgICAgICAgPC9mb3JtPg==')
-	res = mechanize._form.ParseString(form, "https://assistirnovelas.tv")
-	br.form = res[1]
-	#br.select_form(nr=0)
-	br.form['senha']=base64.b64decode('MTIzNDU2')
-	br.form['email']=base64.b64decode('YXJsZWlyYS5jYXN0cm9AZ21haWwuY29t')
-	br.submit()
-	pg += 10
-	mensagemprogresso.update(pg)
-	page = br.open(url).read()
-	links = re.findall("file':.'(.*?mp4.*?)'",page)
-	pg += 10
-	mensagemprogresso.update(pg)
-	if links:
-		for link in links:
-		    listitem = xbmcgui.ListItem('Epsodio', thumbnailImage='')
-		    listitem.setInfo('video', {'Title': 'Episodio'})
-		    playlist.add(url=link, listitem=listitem, index=6)
-		mensagemprogresso.update(100)
-		xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(playlist)
-	else:
-		mensagemprogresso.update(100)
-		dialog = xbmcgui.Dialog()
-		dialog.ok("Indisponivel", "Este ainda não esta disponivel, tente novamente em breve.") 
+    # print url
+    pg = 0
+    mensagemprogresso = xbmcgui.DialogProgress()
+    mensagemprogresso.create('Trabalhando', 'Gerando playlist', 'Por favor aguarde...')
+    pg += 10
+    mensagemprogresso.update(pg)
+    html = abrir_url(url)
+    soup = BeautifulSoup(html)
+    playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+    playlist.clear()
+    pg += 10
+    mensagemprogresso.update(pg)
+    br = mechanize.Browser()
+    cj = cookielib.LWPCookieJar()
+    br.set_cookiejar(cj)
+    br.set_handle_equiv(True)
+    br.set_handle_gzip(True)
+    br.set_handle_redirect(True)
+    br.set_handle_referer(True)
+    br.set_handle_robots(False)
+    br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+    br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+    br.addheaders = [('Referer', url)]
+    pg += 10
+    mensagemprogresso.update(pg)
+    br.open('https://assistirnovelas.tv')
+    form = base64.b64decode('PGZvcm0gYWN0aW9uPSJodHRwczovL2Fzc2lzdGlybm92ZWxhcy50di9Mb2dpblVzdWFyaW8ucGhwIiBpZD0iZm9ybTEiIG1ldGhvZD0icG9zdCI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT5FLW1haWw8L2xpPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGk+PGlucHV0IHR5cGU9InRleHQiIHZhbHVlPSIiIG5hbWU9ImVtYWlsIiBjbGFzcz0iQ2FtcG9Mb2dpbiIgcGxhY2Vob2xkZXI9IlNldSBlLW1haWwiPjwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT5TZW5oYTwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT48aW5wdXQgdmFsdWU9IiIgbmFtZT0ic2VuaGEiIGNsYXNzPSJDYW1wb0xvZ2luIiBwbGFjZWhvbGRlcj0iU3VhIHNlbmhhIiB0eXBlPSJwYXNzd29yZCI+PC9saT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpPjxpbnB1dCB0eXBlPSJzdWJtaXQiIGNsYXNzPSJMb2dpbkluaWNpbyIgdmFsdWU9IkVudHJhciI+PC9saT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpPjxhIGhyZWY9Imh0dHBzOi8vYXNzaXN0aXJub3ZlbGFzLnR2L2NhZGFzdHJvLnBocCI+UmVnaXN0cmFyPC9hPjwvbGk+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaT48YSBocmVmPSJodHRwczovL2Fzc2lzdGlybm92ZWxhcy50di9sZW1icmFyX3NlbmhhLnBocCI+TGVtYnJhciBzZW5oYTwvYT48L2xpPg0KICAgICAgICAgICAgICAgICAgPC9mb3JtPg==')
+    res = mechanize._form.ParseString(form, "https://assistirnovelas.tv")
+    br.form = res[1]
+    # br.select_form(nr=0)
+    br.form['senha'] = base64.b64decode('MTIzNDU2')
+    br.form['email'] = base64.b64decode('YXJsZWlyYS5jYXN0cm9AZ21haWwuY29t')
+    br.submit()
+    pg += 10
+    mensagemprogresso.update(pg)
+    page = br.open(url).read()
+    iframe = re.findall("var url = '(.*?)'",page)[0]+"html5iframe/"
+    print iframe
+    page1 = br.open(iframe).read()
+    print page1
+    links = re.findall("'(.*?)',", page1)
+    pg += 10
+    mensagemprogresso.update(pg)
+    if links:
+	for link in links:
+	    listitem = xbmcgui.ListItem('Epsodio', thumbnailImage='')
+	    listitem.setInfo('video', {'Title': 'Episodio'})
+	    playlist.add(url=link, listitem=listitem, index=7)
+	mensagemprogresso.update(100)
+	xbmc.Player(xbmc.PLAYER_CORE_AUTO).play(playlist)
+    else:
+        mensagemprogresso.update(100)
+        dialog = xbmcgui.Dialog()
+        dialog.ok("Indisponivel", "Este ainda não esta disponivel, tente novamente em breve.") 
 	
 	
 
@@ -1201,7 +1229,17 @@ def addDirC(name,url,mode,iconimage,pasta=True,total=1):
 	liz=xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
 	liz.setProperty('fanart_image', fanart)
 	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
-	return ok	
+	return ok
+
+def addDirD(name, url, mode, iconimage, total=0, pasta=True, plot='', fanart=''):
+    u = sys.argv[0] + "?url=" + urllib.quote_plus(url) + "&mode=" + str(mode) + "&name=" + urllib.quote_plus(name) + "&iconimage=" + urllib.quote_plus(iconimage)
+    liz = xbmcgui.ListItem(name, iconImage="DefaultFolder.png", thumbnailImage=iconimage)
+    liz.setInfo(type="Video", infoLabels={"Title": name, "Plot": plot})
+    contextMenuItems = []
+    contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
+    liz.addContextMenuItems(contextMenuItems, replaceItems=True)
+    liz.setProperty('fanart_image', fanart)
+    return xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=u, listitem=liz, isFolder=pasta, totalItems=total)	
 	
 	
 ############################################################################################################
@@ -1411,7 +1449,7 @@ elif mode==38:
 
 elif mode==42:
 	print ""
-	Listar_categorias_novelas()
+	Listar_categorias_novelas(url=novelas_base,cat=url)
 
 elif mode==43:
 	print ""
@@ -1429,13 +1467,25 @@ elif mode==46:
 	print ""
 	Tv_Gravada()
 
-elif mode==47:
+elif mode==49:
 	print ""
-	Buscar_Tv_Gravada()
+	series_qualidade_hd()
 
-elif mode==48:
+elif mode==50:
 	print ""
-	Listar_novelas()	
+	series_qualidade_sd()
+
+elif mode==51:
+	print ""
+	Programas_tv()
+
+elif mode==52:
+	print ""
+	Episodios_novelas(url)	
+	
+elif mode==53:
+	print ""
+	Listar_categorias_novelas2(url=novelas_base,cat=url)	
 
 	
 
