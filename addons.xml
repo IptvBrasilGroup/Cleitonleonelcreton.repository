@@ -112,4 +112,21 @@
 		<platform>all</platform>
 	</extension>
 </addon>
+
+<addon id="plugin.video.youtubeplay" name="[COLOR white]Youtube[COLOR red]Play[/COLOR]" version="1.0" provider-name="Filipe Carvalho + Cleiton Leonel Creton">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <language>en</language>
+    <platform>all</platform>
+    <summary lang="en">youtubeplay</summary>
+    <description lang="en">Assista aos seus vÃ­deos favoritos do youtube,e tenha a facilidade da nossa lista prÃ©-definida com filmes,documentÃ¡rios etc...
+</description>
+    <platform>all</platform>
+  </extension>
+</addon>
 </addons>
