@@ -32,7 +32,7 @@ def menu_youtube():
 def youtube(url):
 	html = gethtml(url)
 	soup = html.find("ol", {"class" : "section-list"})
-	videos = soup.findAll("h3", {"class" : "yt-lockup-title"})
+	videos = soup.findAll("h3", {"class" : "yt-lockup-title "})
 	for video in videos:
 		url = video.a["href"].replace('/watch?v=','')
 		titulo = video.a.text
@@ -55,6 +55,7 @@ def pesquisar_youtube(url):
 		parametro_pesquisa=urllib.quote(search)
 		url = 'https://www.youtube.com/results?search_query=' + str(parametro_pesquisa)
 		youtube(url)
+		
 
 ##############################################################################################################
 ##											FUNÇÕES															##
