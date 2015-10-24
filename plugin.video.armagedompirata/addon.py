@@ -15,7 +15,7 @@ except:
 h = HTMLParser.HTMLParser()
 
 versao = '0.0.1'
-addon_id = 'plugin.video.armagedomfilmes.pirata'
+addon_id = 'plugin.video.armagedompirata'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
 artfolder = addonfolder + '/resources/img/'
@@ -278,7 +278,7 @@ def adicionar_favoritos_filmes(url):
 	arquivo = open(fav, 'w')
 	arquivo.writelines(texto)
 	arquivo.close()
-	xbmcgui.Dialog().ok('Armagedom Filmes', '                             Adicionado a lista de Favoritos.')	
+	xbmcgui.Dialog().ok('Armagedom Pirata', '                             Adicionado a lista de Favoritos.')	
 
 def favoritos_filmes():
 	arquivo = open(fav, 'r').readlines()
@@ -297,7 +297,7 @@ def favoritos_filmes():
 def limpar_lista_favoritos_filmes():	
 	arquivo = open(fav, 'w')
 	arquivo.write('')
-	xbmcgui.Dialog().ok('Armagedom Filmes', '                      Lista de Favoritos limpa com sucesso.')
+	xbmcgui.Dialog().ok('Armagedom Pirata', '                      Lista de Favoritos limpa com sucesso.')
 	menu()
 	
 def adicionar_favoritos_series(url):
@@ -307,7 +307,7 @@ def adicionar_favoritos_series(url):
 	arquivo = open(favseries, 'w')
 	arquivo.writelines(texto)
 	arquivo.close()
-	xbmcgui.Dialog().ok('Armagedom Filmes', '                             Adicionado a lista de Favoritos.')	
+	xbmcgui.Dialog().ok('Armagedom Pirata', '                             Adicionado a lista de Favoritos.')	
 
 def favoritos_series():
 	arquivo = open(favseries, 'r').readlines()
@@ -326,7 +326,7 @@ def favoritos_series():
 def limpar_lista_favoritos_series():	
 	arquivo = open(favseries, 'w')
 	arquivo.write('')
-	xbmcgui.Dialog().ok('Armagedom Filmes', '                      Lista de Favoritos limpa com sucesso.')
+	xbmcgui.Dialog().ok('Armagedom Pirata', '                      Lista de Favoritos limpa com sucesso.')
 	menu()
 
 def adicionar_favoritos_animes(url):
@@ -336,7 +336,7 @@ def adicionar_favoritos_animes(url):
 	arquivo = open(favanimes, 'w')
 	arquivo.writelines(texto)
 	arquivo.close()
-	xbmcgui.Dialog().ok('Armagedom Filmes', '                             Adicionado a lista de Favoritos.')	
+	xbmcgui.Dialog().ok('Armagedom Pirata', '                             Adicionado a lista de Favoritos.')	
 
 def favoritos_animes():
 	arquivo = open(favanimes, 'r').readlines()
@@ -355,7 +355,7 @@ def favoritos_animes():
 def limpar_lista_favoritos_animes():	
 	arquivo = open(favanimes, 'w')
 	arquivo.write('')
-	xbmcgui.Dialog().ok('Armagedom Filmes', '                      Lista de Favoritos limpa com sucesso.')
+	xbmcgui.Dialog().ok('Armagedom Pirata', '                      Lista de Favoritos limpa com sucesso.')
 	menu()	
 	
 def categoria_favorito():
@@ -446,7 +446,7 @@ def player(name,url,iconimage):
 		cloudzilla_f = r'http://www.cloudzilla.to/share/file/(.*?)"'
 		
 		mensagemprogresso = xbmcgui.DialogProgress()
-		mensagemprogresso.create('ArmagedonFilmes', 'A resolver link','Por favor aguarde...')
+		mensagemprogresso.create('Armagedon Pirata', 'A resolver link','Por favor aguarde...')
 		mensagemprogresso.update(33)
 		links = []
 		hosts = []
