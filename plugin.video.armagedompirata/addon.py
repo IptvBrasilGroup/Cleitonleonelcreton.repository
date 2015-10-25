@@ -60,13 +60,13 @@ def menu_filme(name,url,iconimage):
 	xbmc.executebuiltin('Container.SetViewMode(502)')
 	
 def menu_series(name,url,iconimage):	
-	addDir('[B]Assistir Agora: [/B]'+name,url,4,iconimage,False)
+	addDir('[B]Assistir Agora: [/B]'+name,url,8,iconimage)
 	addDir(name.replace('Dublado e Legendado','').replace('Dublado ou Legendado','')+'[B] - Trailer [/B]'+'[B] Série [/B]',url,31,iconimage,False)
 	addDir('[B]Adicionar aos Favoritos[/B]',name+','+iconimage+','+url,23,url_base2+'E1ebCG3qH1eEfP2v',False)
 	xbmc.executebuiltin('Container.SetViewMode(502)')
 
 def menu_animes(name,url,iconimage):	
-	addDir('[B]Assistir Agora: [/B]'+name,url,4,iconimage,False)
+	addDir('[B]Assistir Agora: [/B]'+name,url,13,iconimage)
 	addDir(name.replace('Dublado e Legendado','').replace('Dublado ou Legendado','')+'[B] - Trailer [/B]'+'[B] Anime [/B]',url,31,iconimage,False)
 	addDir('[B]Adicionar aos Favoritos[/B]',name+','+iconimage+','+url,26,url_base2+'E1ebCG3qH1eEfP2v',False)
 	xbmc.executebuiltin('Container.SetViewMode(502)')	
