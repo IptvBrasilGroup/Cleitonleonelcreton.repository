@@ -14,7 +14,7 @@ except:
     import simplejson as json
 h = HTMLParser.HTMLParser()
 
-versao = '0.0.1'
+versao = '0.0.2'
 addon_id = 'plugin.video.armagedompirata'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -203,7 +203,7 @@ def listar_animes(url):
         xbmcplugin.setContent(int(sys.argv[1]), 'movies')
         xbmc.executebuiltin('Container.SetViewMode(515)')
 
-def listar_temporadas_animes(url):
+def listar_temporadas_animes(name,url,iconimage):
 	print url
 	html = gethtml(url)
 	soup = html.find("ul",{"class":"bp-series"})
@@ -214,10 +214,10 @@ def listar_temporadas_animes(url):
 	while i <= total:
 		temporada = soup("li",{"class":"serie"+str(i)+"-code"})
 		for temp in temporada:
-			img = temp.img["src"]
+			#img = temp.img["src"]
 			titulo = str(i)+" temporada"
 			try:
-				addDir(titulo,url,14,img,True,total)
+				addDir(titulo,url,14,iconimage,True,total)
 			except:
 				pass
 		i=i+1
@@ -741,7 +741,7 @@ elif mode==12:
     listar_animes(url)
 elif mode==13:
     print ""
-    listar_temporadas_animes(url)
+    listar_temporadas_animes(name,url,iconimage)
 elif mode==14:
     print ""
     listar_episodios_animes(name,url,iconimage)
