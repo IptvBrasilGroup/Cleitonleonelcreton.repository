@@ -5,8 +5,10 @@
 #                                     BIBLIOTECAS A IMPORTAR E DEFINICÕES                                  #
 ############################################################################################################
 
-import urllib,urllib2,re,xbmcplugin,xbmcgui,xbmc,xbmcaddon,HTMLParser,xmltosrt,os
+import urllib,urllib2,re,xbmcplugin,xbmcgui,xbmc,xbmcaddon,HTMLParser,xmltosrt,os,sys,urlparse
+import urlresolver
 import jsunpack
+from resources.lib.libraries import client
 from bs4 import BeautifulSoup
 try:
     import json
@@ -14,7 +16,7 @@ except:
     import simplejson as json
 h = HTMLParser.HTMLParser()
 
-versao = '0.0.2'
+versao = '0.0.3'
 addon_id = 'plugin.video.armagedompirata'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -24,22 +26,29 @@ fav = addonfolder + '/fav'
 favseries = addonfolder + '/favseries'
 favanimes = addonfolder + '/favanimes'
 url_base = 'http://www.armagedomfilmes.biz/'
-url_base2 = 'https://copy.com/'
+url_base2 = 'http://s19.postimg.org/'
+url_base3 = 'https://docs.google.com/uc?export=download&id='
+addonname = 'Armagedom Pirata'
+line1 = "Lista de Favoritos limpa com sucesso"
+line2 = "Favorito adicionado com sucesso"
+line3 = "Favorito removido com sucesso"
+icon = addonfolder + '/icon.png'
+time = 2 #in miliseconds
 
 ############################################################################################################
 #                                                  MENUS                                                   #
 ############################################################################################################
 
 def menu():
-    addDir("[B]Gêneros[/B]",url_base2+'PQcbgvHfYmf47yuB?download=1',2,url_base2+'ZLG0E8EeWlWfxpNA')
-    addDir("[B]Lançamentos[/B]",url_base+'?cat=3236',3,url_base2+'AJYjCOn6mPpqLORX')	
-    addDir("[B]Séries[/B]",url_base+'?cat=21',7,url_base2+'BkoXzq0WLzdlK61z')
-    addDir("[B]Animes[/B]",url_base+'?cat=36',12,url_base2+'Nbwfa9VUn6jXlUzD')
-    addDir("[B]Bluray[/B]",url_base+'?cat=5529',3,url_base2+'0VnWFQQ6EzOkr9Fl')
-    addDir("[B]Coleções de Filmes[/B]",url_base+'?cat=4509',5,url_base2+'CABnrk8ARqVG3IK6')	
-    addDir("[B]Favoritos[/B]",'-',22,url_base2+'E1ebCG3qH1eEfP2v')	
-    xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-    xbmc.executebuiltin('Container.SetViewMode(502)')
+    addDir("[B]Gêneros[/B]",url_base3+'0B4KWNSgTIdibVURvSGRRaWVBanc',2,url_base2+'5oj20tqw3/G_neros.png')
+    addDir("[B]Lançamentos[/B]",url_base+'?cat=3236',3,url_base2+'mqbw2x5r7/Lan_amentos.png')	
+    addDir("[B]Séries[/B]",url_base+'?cat=21',7,url_base2+'ygptkayjn/S_ries.png')
+    addDir("[B]Animes[/B]",url_base+'?cat=36',12,url_base2+'oxg4qub1f/Animes.png')
+    addDir("[B]Bluray[/B]",url_base+'?cat=5529',32,url_base2+'5gvf4bfxf/Bluray.png')
+    addDir("[B]Coleções de Filmes[/B]",url_base+'?cat=4509',5,url_base2+'mio96eusj/Cole_es_de_Filmes.png')	
+    addDir("[B]Favoritos[/B]",'-',22,url_base2+'rilped0f7/Favoritos.png')
+    addDir("[B]Configurações[/B]",'-',33,url_base2+'kulxnoiub/config.png')	
+    setViewMenu()
 	
 def todas_categorias(url):	
 	html = gethtml(url)
@@ -50,30 +59,11 @@ def todas_categorias(url):
 		url = categoria.a["href"]
 		img = categoria.img["src"]
 		addDir("[B]"+titulo.encode('utf-8')+"[/B]",url,3,url_base2+img)
-        xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-        xbmc.executebuiltin('Container.SetViewMode(502)')
-		
-def menu_filme(name,url,iconimage):	
-	addDir('[B]Assistir Agora: [/B]'+name,url,4,iconimage,False)
-	addDir('[B]Trailer[/B]',url,21,iconimage,False)
-	addDir('[B]Adicionar aos Favoritos[/B]',name+','+iconimage+','+url,17,url_base2+'E1ebCG3qH1eEfP2v',False)
-	xbmc.executebuiltin('Container.SetViewMode(502)')
-	
-def menu_series(name,url,iconimage):	
-	addDir('[B]Assistir Agora: [/B]'+name,url,8,iconimage)
-	addDir(name.replace('Dublado e Legendado','').replace('Dublado ou Legendado','')+'[B] - Trailer [/B]'+'[B] Série [/B]',url,31,iconimage,False)
-	addDir('[B]Adicionar aos Favoritos[/B]',name+','+iconimage+','+url,23,url_base2+'E1ebCG3qH1eEfP2v',False)
-	xbmc.executebuiltin('Container.SetViewMode(502)')
-
-def menu_animes(name,url,iconimage):	
-	addDir('[B]Assistir Agora: [/B]'+name,url,13,iconimage)
-	addDir(name.replace('Dublado e Legendado','').replace('Dublado ou Legendado','')+'[B] - Trailer [/B]'+'[B] Anime [/B]',url,31,iconimage,False)
-	addDir('[B]Adicionar aos Favoritos[/B]',name+','+iconimage+','+url,26,url_base2+'E1ebCG3qH1eEfP2v',False)
-	xbmc.executebuiltin('Container.SetViewMode(502)')	
+		setViewMenu()	
 	
 def listar_filmes(url):
     print url
-    addDir("[B][COLOR red]PESQUISAR FILMES[/B][/COLOR]",'-',11,url_base2+'PyJEKKphI7CuvJPe')
+    addDir("[B][COLOR red]PESQUISAR FILMES[/B][/COLOR]",'-',11,url_base2+'hzc0kwcwz/Pesquisar_Filmes.png')
     html = gethtml(url)
     soup = html.find("div",{"class":"bic-miniaturas"})
     filmes = soup("div",{"class":"bic-miniatura"})
@@ -81,13 +71,29 @@ def listar_filmes(url):
         titulo = filme.a["title"].replace('Assistir ','').replace('&#8211;',"-")
         url = filme.a["href"]
         img = filme.img["src"]
-        addDir("[B]"+titulo.encode('utf-8')+"[/B]",url,20,img)	
+        addDirf("[B]"+titulo.encode('utf-8')+"[/B]",url,4,img,False)	
     soup = html.find('div',{"class":"wp-pagenavi"})
     page = soup("a",{"class":"nextpostslink"})
     for prox_pagina in page:
-        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],3,url_base2+'vsWirE1tLGWPSUJK')		
-        xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-        xbmc.executebuiltin('Container.SetViewMode(515)')
+        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],3,url_base2+'597s7t4yr/Pr_xima_P_gina.png')		
+        setViewFilmes()
+		
+def listar_filmes_bluray(url):
+    print url
+    addDir("[B][COLOR red]PESQUISAR FILMES[/B][/COLOR]",'-',11,url_base2+'hzc0kwcwz/Pesquisar_Filmes.png')
+    html = gethtml(url)
+    soup = html.find("div",{"class":"bic-miniaturas"})
+    filmes = soup("div",{"class":"bic-miniatura"})
+    for filme in filmes:
+        titulo = filme.a["title"].replace('Assistir ','').replace('&#8211;',"-")
+        url = filme.a["href"]
+        img = filme.img["src"]
+        addDirfb("[B]"+titulo.encode('utf-8')+"[/B]",url,4,img,False)	
+    soup = html.find('div',{"class":"wp-pagenavi"})
+    page = soup("a",{"class":"nextpostslink"})
+    for prox_pagina in page:
+        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],3,url_base2+'597s7t4yr/Pr_xima_P_gina.png')		
+        setViewFilmes()
 
 def listar_filmes_colecoes(url):
     print url
@@ -102,22 +108,21 @@ def listar_filmes_colecoes(url):
     soup = html.find('div',{"class":"wp-pagenavi"})
     page = soup("a",{"class":"nextpostslink"})
     for prox_pagina in page:
-        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],5,url_base2+'vsWirE1tLGWPSUJK')		
-        xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-        xbmc.executebuiltin('Container.SetViewMode(515)')
+        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],5,url_base2+'597s7t4yr/Pr_xima_P_gina.png')
+        setViewFilmes()	
+
 
 def listar_filmes_colecoes2(url):
     print url
     codigo_fonte = abrir_url(url)
     match = re.compile('<a title="(.+?)" href="(.+?)"><img src="(.+?)" alt=".+?" /></a>').findall(codigo_fonte)
     for titulo, url, img in match:	
-	    addDir(titulo.replace('Assistir ',''),url,20,img)
-	    xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-	    xbmc.executebuiltin('Container.SetViewMode(515)')
+	    addDircf(titulo.replace('Assistir ',''),url,4,img)
+            setViewFilmes()
 		
 def listar_series(url):
     print url
-    addDir("[B][COLOR red]PESQUISAR SÉRIES[/B][/COLOR]",'-',10,url_base2+'XU3qvW80Lk2CalVK')
+    addDir("[B][COLOR red]PESQUISAR SÉRIES[/B][/COLOR]",'-',10,url_base2+'wl31959pf/Pesquisar_S_ries.png')
     html = gethtml(url)
     soup = html.find("div",{"class":"bic-miniaturas"})
     series = soup("div",{"class":"bic-miniatura"})
@@ -125,13 +130,12 @@ def listar_series(url):
         titulo = serie.a["title"].replace('Assistir ','').replace('&#8211;',"-")
         url = serie.a["href"]
         img = serie.img["src"]
-        addDir("[B]"+titulo.encode('utf-8')+"[/B]",url,29,img)	
+        addDirs("[B]"+titulo.encode('utf-8')+"[/B]",url,8,img)	
     soup = html.find('div',{"class":"wp-pagenavi"})
     page = soup("a",{"class":"nextpostslink"})
     for prox_pagina in page:
-        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],7,url_base2+'vsWirE1tLGWPSUJK')		
-        xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-        xbmc.executebuiltin('Container.SetViewMode(515)')
+        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],7,url_base2+'597s7t4yr/Pr_xima_P_gina.png')		
+        setViewFilmes()
 
 def listar_temporadas_series(url):
 	print url
@@ -147,12 +151,11 @@ def listar_temporadas_series(url):
 			img = temp.img["src"]
 			titulo = str(i)+" temporada"
 			try:
-				addDir(titulo,url,9,img,True,total)
+				addDirs(titulo,url,9,img,True,total)
 			except:
 				pass
 		i=i+1
-	xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-	xbmc.executebuiltin('Container.SetViewMode(515)')
+		setViewFilmes() 
 
 def listar_episodios_series(name,url,iconimage):
 	print url
@@ -181,13 +184,12 @@ def listar_episodios_series(name,url,iconimage):
 	total = len(a)
 	for url2, titulo, in a:
 		titulo = titulo.replace('&#8211;',"-").replace('&#8217;',"'").replace('Assistir ','')
-		addDir(titulo,url2,4,iconimage,False,total)
-        xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-        xbmc.executebuiltin('Container.SetViewMode(515)')
+		addDirs(titulo,url2,4,iconimage,False,total)
+        setViewFilmes()
 
 def listar_animes(url):
     print url
-    addDir("[B][COLOR red]PESQUISAR ANIMES[/B][/COLOR]",'-',15,url_base2+'lXYxZEbCfUhgrWHb')
+    addDir("[B][COLOR red]PESQUISAR ANIMES[/B][/COLOR]",'-',15,url_base2+'jic03m8v7/Pesquisar_Animes.png')
     html = gethtml(url)
     soup = html.find("div",{"class":"bic-miniaturas"})
     animes = soup("div",{"class":"bic-miniatura"})
@@ -195,13 +197,12 @@ def listar_animes(url):
         titulo = anime.a["title"].replace('Assistir ','').replace('&#8211;',"-")
         url = anime.a["href"]
         img = anime.img["src"]
-        addDir("[B]"+titulo.encode('utf-8')+"[/B]",url,30,img)	
+        addDira("[B]"+titulo.encode('utf-8')+"[/B]",url,13,img)	
     soup = html.find('div',{"class":"wp-pagenavi"})
     page = soup("a",{"class":"nextpostslink"})
     for prox_pagina in page:
-        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],12,url_base2+'vsWirE1tLGWPSUJK')		
-        xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-        xbmc.executebuiltin('Container.SetViewMode(515)')
+        addDir("[B]"'Próxima Página >>'"[/B]",prox_pagina["href"],12,url_base2+'597s7t4yr/Pr_xima_P_gina.png')		
+        setViewFilmes() 
 
 def listar_temporadas_animes(name,url,iconimage):
 	print url
@@ -217,12 +218,11 @@ def listar_temporadas_animes(name,url,iconimage):
 			#img = temp.img["src"]
 			titulo = str(i)+" temporada"
 			try:
-				addDir(titulo,url,14,iconimage,True,total)
+				addDira(titulo,url,14,iconimage,True,total)
 			except:
 				pass
 		i=i+1
-	xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-	xbmc.executebuiltin('Container.SetViewMode(515)')
+		setViewFilmes() 
 	
 def listar_episodios_animes(name,url,iconimage):	
 	print url
@@ -251,9 +251,8 @@ def listar_episodios_animes(name,url,iconimage):
 	total = len(a)
 	for url2, titulo, in a:
 		titulo = titulo.replace('Assistir ','')
-		addDir(titulo,url2,16,iconimage,False,total)
-        xbmcplugin.setContent(int(sys.argv[1]), 'movies')
-        xbmc.executebuiltin('Container.SetViewMode(515)')
+		addDira(titulo,url2,16,iconimage,False,total)
+        setViewFilmes() 
 
 def resolve_animes(name,url,iconimage):
 	print url
@@ -271,14 +270,14 @@ def resolve_animes(name,url,iconimage):
 	except:
 	    pass
 		
-def adicionar_favoritos_filmes(url):
+def adicionar_favoritos_filmes(name,url,iconimage):
 	arquivo = open(fav, 'r')
 	texto = arquivo.readlines()
-	texto.append('\n'+url) 
+	texto.append(name+','+url+','+iconimage+','+'\n') 
 	arquivo = open(fav, 'w')
 	arquivo.writelines(texto)
 	arquivo.close()
-	xbmcgui.Dialog().ok('Armagedom Pirata', '                             Adicionado a lista de Favoritos.')	
+	xbmc.executebuiltin('Notification(%s, %s, %i, %s)'%(addonname,line2, time, icon))	
 
 def favoritos_filmes():
 	arquivo = open(fav, 'r').readlines()
@@ -286,28 +285,36 @@ def favoritos_filmes():
 		params = line.split(',')
 		try:
 			nome = params[0]
-			img = params[1].replace(' http','http')
-			rtmp = params[2]
-			addDir(nome,rtmp,4,img,False)
+			rtmp = params[1]
+			img = params[2]			
+			addDirf(nome,rtmp,4,img,False)
 		except:
 			pass
-	addDir('[B]Remover Favoritos[/B]','-',19,url_base2+'nglhskXKjB2xShIB')	
-	xbmc.executebuiltin('Container.SetViewMode(500)')
+			setViewFilmes()
 
-def limpar_lista_favoritos_filmes():	
+def limpar_lista_favoritos_filmes():
+	arquivo = open(fav, 'r')
+	ref = url
+	linhas = arquivo.readlines()
+	arquivo.close()
 	arquivo = open(fav, 'w')
-	arquivo.write('')
-	xbmcgui.Dialog().ok('Armagedom Pirata', '                      Lista de Favoritos limpa com sucesso.')
-	menu()
+	for linha in linhas:
+		if ref in linha:
+			linhas.remove(linha)
+			arquivo.writelines(linhas)
+			arquivo.close()
+	xbmc.executebuiltin('Notification(%s, %s, %i, %s)'%(addonname,line3, time, icon))			
+	xbmc.executebuiltin("Container.Refresh")
+	sys.exit(0)
 	
 def adicionar_favoritos_series(url):
 	arquivo = open(favseries, 'r')
 	texto = arquivo.readlines()
-	texto.append('\n'+url) 
+	texto.append(name+','+url+','+iconimage+','+'\n') 
 	arquivo = open(favseries, 'w')
 	arquivo.writelines(texto)
 	arquivo.close()
-	xbmcgui.Dialog().ok('Armagedom Pirata', '                             Adicionado a lista de Favoritos.')	
+	xbmc.executebuiltin('Notification(%s, %s, %i, %s)'%(addonname,line2, time, icon))	
 
 def favoritos_series():
 	arquivo = open(favseries, 'r').readlines()
@@ -315,28 +322,36 @@ def favoritos_series():
 		params = line.split(',')
 		try:
 			nome = params[0]
-			img = params[1].replace(' http','http')
-			rtmp = params[2]
-			addDir(nome,rtmp,8,img)
+			rtmp = params[1]
+			img = params[2]			
+			addDirs(nome,rtmp,8,img)
 		except:
-			pass
-	addDir('[B]Remover Favoritos[/B]','-',25,url_base2+'nglhskXKjB2xShIB')	
-	xbmc.executebuiltin('Container.SetViewMode(500)')
+			pass	
+	setViewFilmes()
 
-def limpar_lista_favoritos_series():	
+def limpar_lista_favoritos_series():
+	arquivo = open(favseries, 'r')
+	ref = url
+	linhas = arquivo.readlines()
+	arquivo.close()
 	arquivo = open(favseries, 'w')
-	arquivo.write('')
-	xbmcgui.Dialog().ok('Armagedom Pirata', '                      Lista de Favoritos limpa com sucesso.')
-	menu()
+	for linha in linhas:
+		if ref in linha:
+			linhas.remove(linha)
+			arquivo.writelines(linhas)
+			arquivo.close()
+	xbmc.executebuiltin('Notification(%s, %s, %i, %s)'%(addonname,line3, time, icon))
+	xbmc.executebuiltin("Container.Refresh")	
+	sys.exit(0)
 
 def adicionar_favoritos_animes(url):
 	arquivo = open(favanimes, 'r')
 	texto = arquivo.readlines()
-	texto.append('\n'+url) 
+	texto.append(name+','+url+','+iconimage+','+'\n') 
 	arquivo = open(favanimes, 'w')
 	arquivo.writelines(texto)
 	arquivo.close()
-	xbmcgui.Dialog().ok('Armagedom Pirata', '                             Adicionado a lista de Favoritos.')	
+	xbmc.executebuiltin('Notification(%s, %s, %i, %s)'%(addonname,line2, time, icon))	
 
 def favoritos_animes():
 	arquivo = open(favanimes, 'r').readlines()
@@ -344,24 +359,33 @@ def favoritos_animes():
 		params = line.split(',')
 		try:
 			nome = params[0]
-			img = params[1].replace(' http','http')
-			rtmp = params[2]
-			addDir(nome,rtmp,13,img)
+			rtmp = params[1]
+			img = params[2]			
+			addDira(nome,rtmp,13,img)
 		except:
-			pass
-	addDir('[B]Remover Favoritos[/B]','-',19,url_base2+'nglhskXKjB2xShIB')	
-	xbmc.executebuiltin('Container.SetViewMode(500)')
+			pass	
+	setViewFilmes()
 
-def limpar_lista_favoritos_animes():	
+def limpar_lista_favoritos_animes():
+	arquivo = open(favanimes, 'r')
+	ref = url
+	linhas = arquivo.readlines()
+	arquivo.close()
 	arquivo = open(favanimes, 'w')
-	arquivo.write('')
-	xbmcgui.Dialog().ok('Armagedom Pirata', '                      Lista de Favoritos limpa com sucesso.')
-	menu()	
+	for linha in linhas:
+		if ref in linha:
+			linhas.remove(linha)
+			arquivo.writelines(linhas)
+			arquivo.close()
+	xbmc.executebuiltin('Notification(%s, %s, %i, %s)'%(addonname,line3, time, icon))	
+	xbmc.executebuiltin("Container.Refresh")
+	sys.exit(0)	
 	
 def categoria_favorito():
-    addDir("[B]Filmes Favoritos[/B]",'-',18,url_base2+'oHdcc77U8Zb3SqfM')
-    addDir("[B]Séries Favoritas[/B]",'-',24,url_base2+'thfbPOgDpEOlmNq6')
-    addDir("[B]Animes Favoritos[/B]",'-',27,url_base2+'WzykgvwpNri1l4I1')	
+    addDir("[B]Filmes Favoritos[/B]",'-',18,url_base2+'pn3igy0yr/Filmes_Favoritos.png')
+    addDir("[B]Séries Favoritas[/B]",'-',24,url_base2+'edaslzvxf/S_ries_Favoritas.png')
+    addDir("[B]Animes Favoritos[/B]",'-',27,url_base2+'jd88ty1k3/Animes_Favoritos.png')
+    setViewMenu()
 	
 def trailer(name,url,iconimage):  
 	    html = abrir_url(url)
@@ -372,8 +396,8 @@ def trailer(name,url,iconimage):
 		
 def trailer2(name,url,iconimage):
 	yt = "https://www.youtube.com/results?search_query="
-	codigo_fonte = abrir_url(yt+name.replace(' ','%20'))
-	#print html
+	codigo_fonte = abrir_url(yt+'traileroficial'+name.replace(' ','%20'))
+	print codigo_fonte
 	a=[]
 	idd = re.compile('" data-context-item-id="(.+?)"').findall(codigo_fonte)[0]
 	print idd	
@@ -396,7 +420,7 @@ def obtem_url_dropvideo(url):
 		return [url_video,"-"]
 	except:
 		pass	
-	
+
 def obtem_videobis(url):
 	codigo_fonte = abrir_url(url)
 	
@@ -415,15 +439,6 @@ def obtem_neodrive(url):
 	except:
 		return ["-","-"]
 
-def obtem_videopw(url):
-	codigo_fonte = abrir_url(url)
-	
-	try:
-		url_video = re.findall(r'var vurl2 = "(.*?)";',codigo_fonte)[0]
-		return [url_video,"-"]
-	except:
-		return ["-","-"]		
-	
 def obtem_cloudzilla(url):
 	codigo_fonte = abrir_url(url)
 	
@@ -433,37 +448,103 @@ def obtem_cloudzilla(url):
 	except:
 		return ["-","-"]
 
+def obtem_openload(url):
+	try:
+		url_video = urlresolver.resolve(url)
+		return [url_video, "-"]
+	except:
+		return ["-", "-"]
+
+def obtem_videomega(url):
+	try:
+		url_video = urlresolver.resolve(url)
+		return [url_video, "-"]
+	except:
+		return ["-", "-"]
+
+def obtem_videott(url):
+	try:
+		url_video = urlresolver.resolve(url)
+		return [url_video, "-"]
+	except:
+		return ["-", "-"]
+		
+def obtem_videobis(url):
+	codigo_fonte = abrir_url(url)
+	
+	try:
+		url_video = re.findall(r'file: "(.*?)"',codigo_fonte)[1]
+		return [url_video,"-"]
+	except:
+		return ["-","-"]
+		
+def obtem_videopw(url):
+	codigo_fonte = abrir_url(url)
+	
+	try:
+		url_video = re.findall(r'var vurl2 = "(.*?)";',codigo_fonte)[0]
+		return [url_video,"-"]
+	except:
+		return ["-","-"]
+
+def obtem_vidto(url):
+    print url
+    try:
+		url_video = urlresolver.resolve(url)
+		return [url_video, "-"]
+    except:
+		return ["-", "-"]
+
+def obtem_videowood(url):
+    print url
+    try:
+		url_video = urlresolver.resolve(url)
+		return [url_video, "-"]
+    except:
+		return ["-", "-"]		
+	
+def obtem_flashx(url):
+    print url
+    url = url.replace("embed-","").replace("-780x450.html","")
+    print url
+    try:
+		url_video = urlresolver.resolve(url)
+		return [url_video, "-"]
+    except:
+		return ["-", "-"]
+
+def obtem_youwatch(url):
+    print url
+    try:
+		url_video = urlresolver.resolve(url)
+		return [url_video, "-"]
+    except:
+		return ["-", "-"]		
+
 def player(name,url,iconimage):
 	
 	try:
-		dropvideo = r'src="(.*?dropvideo.*?/embed.*?)"'
-		dropmega = r'src=".*?drop.*?id=(.*?)"'
 		neodrive = r'src="(.*?neodrive.*?/embed.*?)"'
 		neomega = r'src=".*?neodrive.*?id=(.*?)"'
 		videobis = r'SRC="(.*?videobis.*?/embed.*?)"'
 		videopw = r'src=".*?videopw.*?id=(.*?)"'
 		cloudzilla = r'cloudzilla.php.id=(.*?)"'
 		cloudzilla_f = r'http://www.cloudzilla.to/share/file/(.*?)"'
+		flashx = r'src="(.*?flashx.tv/.*?)"'
+		openload = r'src="(.*?openload.co/embed/.*?)"'
+		videomega = r'src=".*?videomega.tv/view.*?ref=(.*?)"'
+		videott = r'src=".*?videott.*?id=(.*?)"'
+		vidto = r'src=".*?vidto.me/embed-(.*?)"'
+		videowood = r'src=".*?videowood.tv/embed/(.*?)"'
+		youwatch = r'src=".*?youwatch.org/embed-(.*?)"'		
 		
 		mensagemprogresso = xbmcgui.DialogProgress()
-		mensagemprogresso.create('Armagedon Pirata', 'A resolver link','Por favor aguarde...')
+		mensagemprogresso.create('Armagedon Pirata', 'Procurando fontes ativas para '+name,'Por favor aguarde...')
 		mensagemprogresso.update(33)
 		links = []
 		hosts = []
 		matriz = []
 		codigo_fonte = abrir_url(url)
-		
-		try:
-			links.append(re.findall(dropvideo, codigo_fonte)[0])
-			hosts.append('Dropvideo')
-		except:
-			pass
-		
-		try:
-			links.append('http://www.dropvideo.com/embed/'+re.findall(dropmega, codigo_fonte)[0])
-			hosts.append('Dropvideo')
-		except:
-			pass
 		
 		try:
 			links.append('http://videopw.com/e/'+re.findall(videopw, codigo_fonte)[0])
@@ -501,6 +582,48 @@ def player(name,url,iconimage):
 		except:
 			pass
 			
+		try:
+			links.append(re.findall(flashx, codigo_fonte)[0])
+			hosts.append('Flashx')
+		except:
+			pass			
+			
+		try:
+			links.append('http://videomega.tv/view.php?ref='+re.findall(videomega, codigo_fonte)[0])
+			hosts.append('Videomega')
+		except:
+			pass			
+			
+		try:
+			links.append(re.findall(openload, codigo_fonte)[0])
+			hosts.append('Openload')
+		except:
+			pass
+			
+		try:
+			links.append('http://youwatch.org/embed-'+re.findall(youwatch, codigo_fonte)[0])
+			hosts.append('Youwatch')
+		except:
+			pass			
+
+		try:
+			links.append('http://www.video.tt/watch_video.php?v='+re.findall(videott, codigo_fonte)[0])
+			hosts.append('Videott')
+		except:
+			pass
+
+		try:
+			links.append('http://vidto.me/embed-'+re.findall(vidto, codigo_fonte)[0])
+			hosts.append('Vidto')
+		except:
+			pass
+
+		try:
+			links.append('http://videowood.tv/embed/'+re.findall(videowood, codigo_fonte)[0])
+			hosts.append('Videowood')
+		except:
+			pass			
+			
 		if not hosts:
 			return
 		
@@ -510,19 +633,31 @@ def player(name,url,iconimage):
 			return
 		
 		url_video = links[index]
-		mensagemprogresso.update(66)
+		mensagemprogresso.update(66,'Resolvendo fonte para ' + name,'Por favor aguarde...')
 		
-		print 'Player url: %s' % url_video
-		if 'dropvideo.com/embed' in url_video:
-			matriz = obtem_url_dropvideo(url_video)  
-		elif 'cloudzilla' in url_video:
+		print 'Player url: %s' % url_video  
+		if 'cloudzilla' in url_video:
 			matriz = obtem_cloudzilla(url_video)
 		elif 'videobis' in url_video:
 			matriz = obtem_videobis(url_video)
 		elif 'neodrive' in url_video:
 			matriz = obtem_neodrive(url_video)
 		elif 'videopw' in url_video:
-			matriz = obtem_videopw(url_video)			
+			matriz = obtem_videopw(url_video)
+		elif 'flashx.tv' in url_video:
+			matriz = obtem_flashx(url_video)		
+		elif 'openload.co/embed' in url_video:
+			matriz = obtem_openload(url_video)	
+		elif 'videomega' in url_video:
+			matriz = obtem_videomega(url_video)
+		elif 'video.tt' in url_video:
+			matriz = obtem_videott(url_video)
+		elif 'vidto' in url_video:
+			matriz = obtem_vidto(url_video)
+		elif 'videowood' in url_video:
+			matriz = obtem_videowood(url_video)
+		elif 'youwatch' in url_video:
+			matriz = obtem_youwatch(url_video)			
 		else:
 			print "Falha: " + str(url_video)
 		print matriz
@@ -601,7 +736,32 @@ def pesquisar_animes():
         parametro_pesquisa=urllib.quote(search)
         url = 'http://www.armagedomfilmes.biz/?s=%s&s-btn=buscar' % str(parametro_pesquisa)
         print url
-        listar_animes(url)		
+        listar_animes(url)
+
+def config():
+		selfAddon.openSettings()
+		setViewMenu()
+		sys.exit(0)
+		xbmcplugin.endOfDirectory(int(sys.argv[1]))
+
+def setViewMenu():
+		xbmcplugin.setContent(int(sys.argv[1]), 'episodies')
+		opcao = selfAddon.getSetting('menuVisu')
+		if   opcao == '0': xbmc.executebuiltin("Container.SetViewMode(50)")
+		elif opcao == '1': xbmc.executebuiltin("Container.SetViewMode(51)")
+		elif opcao == '2': xbmc.executebuiltin("Container.SetViewMode(500)")
+
+def setViewFilmes():
+		xbmcplugin.setContent(int(sys.argv[1]), 'movies')
+		opcao = selfAddon.getSetting('filmesVisu')
+		if   opcao == '0': xbmc.executebuiltin("Container.SetViewMode(50)")
+		elif opcao == '1': xbmc.executebuiltin("Container.SetViewMode(51)")
+		elif opcao == '2': xbmc.executebuiltin("Container.SetViewMode(500)")
+		elif opcao == '3': xbmc.executebuiltin("Container.SetViewMode(501)")
+		elif opcao == '4': xbmc.executebuiltin("Container.SetViewMode(508)")
+		elif opcao == '5': xbmc.executebuiltin("Container.SetViewMode(504)")
+		elif opcao == '6': xbmc.executebuiltin("Container.SetViewMode(503)")
+		elif opcao == '7': xbmc.executebuiltin("Container.SetViewMode(515)")		
 
 ############################################################################################################
 #                                                  FUNCÕES                                                 #
@@ -622,7 +782,7 @@ def gethtml(url):
     link = response.read()
     soup = BeautifulSoup(link)
     return soup
-
+	
 def addDir(name,url,mode,iconimage,pasta=True,total=1,plot=''):
 	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)
 	ok=True
@@ -631,9 +791,96 @@ def addDir(name,url,mode,iconimage,pasta=True,total=1,plot=''):
 	liz.setInfo(type="Video", infoLabels={"Title": name, "Plot": plot})
 	contextMenuItems = []
 	contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
-	contextMenuItems.append(("[COLOR lime]Add to Favourite Movies[/COLOR]",'XBMC.RunPlugin(%s?name=name%s&url=url%s&mode=17&iconimage=iconimage%s)'%(sys.argv[0], urllib.quote(name), url, urllib.quote(iconimage))))
-	contextMenuItems.append(("[COLOR orange]Remove from Favourite Movies[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=19&iconimage=%s)'%(sys.argv[0], urllib.quote(name), url, urllib.quote(iconimage))))
-	liz.addContextMenuItems(contextMenuItems, replaceItems=True)
+	liz.addContextMenuItems(contextMenuItems, replaceItems=False)
+	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
+	return ok	
+
+def addDirf(name,url,mode,iconimage,pasta=True,total=1,plot=''):
+	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)
+	ok=True
+	liz=xbmcgui.ListItem(name, iconImage="iconimage", thumbnailImage=iconimage)
+	liz.setProperty('fanart_image', iconimage)
+	liz.setInfo(type="Video", infoLabels={"Title": name, "Plot": plot})
+	contextMenuItems = []
+	contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
+	contextMenuItems.append(("[COLOR lime]Adicionar a Favoritos do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=17&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(("[COLOR orange]Remover um Favorito do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=19&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(('[COLOR lime]Assistir Trailer[/COLOR]', 'XBMC.RunPlugin(%s?url=%s&mode=21)'%(sys.argv[0], urllib.quote_plus(url))))
+	liz.addContextMenuItems(contextMenuItems, replaceItems=False)
+	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
+	return ok
+	
+def addDirfb(name,url,mode,iconimage,pasta=True,total=1,plot=''):
+	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)
+	ok=True
+	liz=xbmcgui.ListItem(name, iconImage="iconimage", thumbnailImage=iconimage)
+	liz.setProperty('fanart_image', iconimage)
+	liz.setInfo(type="Video", infoLabels={"Title": name, "Plot": plot})
+	contextMenuItems = []
+	contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
+	contextMenuItems.append(("[COLOR lime]Adicionar a Favoritos do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=17&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(("[COLOR orange]Remover um Favorito do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=19&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(('[COLOR lime]Assistir Trailer[/COLOR]', 'XBMC.RunPlugin(%s?name=%s&url=%s&mode=31&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	liz.addContextMenuItems(contextMenuItems, replaceItems=False)
+	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
+	return ok	
+	
+def addDirs(name,url,mode,iconimage,pasta=True,total=1,plot=''):
+	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)
+	ok=True
+	liz=xbmcgui.ListItem(name, iconImage="iconimage", thumbnailImage=iconimage)
+	liz.setProperty('fanart_image', iconimage)
+	liz.setInfo(type="Video", infoLabels={"Title": name, "Plot": plot})
+	contextMenuItems = []
+	contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
+	contextMenuItems.append(("[COLOR lime]Adicionar a Favoritos do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=23&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(("[COLOR orange]Remover um Favorito do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=25&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(('[COLOR lime]Assistir Trailer[/COLOR]', 'XBMC.RunPlugin(%s?name=%s&url=%s&mode=31&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	liz.addContextMenuItems(contextMenuItems, replaceItems=False)
+	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
+	return ok	
+
+def addDira(name,url,mode,iconimage,pasta=True,total=1,plot=''):
+	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)
+	ok=True
+	liz=xbmcgui.ListItem(name, iconImage="iconimage", thumbnailImage=iconimage)
+	liz.setProperty('fanart_image', iconimage)
+	liz.setInfo(type="Video", infoLabels={"Title": name, "Plot": plot})
+	contextMenuItems = []
+	contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
+	contextMenuItems.append(("[COLOR lime]Adicionar a Favoritos do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=26&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(("[COLOR orange]Remover um Favorito do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=28&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(('[COLOR lime]Assistir Trailer[/COLOR]', 'XBMC.RunPlugin(%s?name=%s&url=%s&mode=31&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	liz.addContextMenuItems(contextMenuItems, replaceItems=False)
+	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
+	return ok
+
+def addDircf(name,url,mode,iconimage,pasta=True,total=1,plot=''):
+	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)
+	ok=True
+	liz=xbmcgui.ListItem(name, iconImage="iconimage", thumbnailImage=iconimage)
+	liz.setProperty('fanart_image', iconimage)
+	liz.setInfo(type="Video", infoLabels={"Title": name, "Plot": plot})
+	contextMenuItems = []
+	contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
+	contextMenuItems.append(("[COLOR lime]Adicionar a Favoritos do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=17&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(("[COLOR orange]Remover um Favorito do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=19&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(('[COLOR lime]Assistir Trailer[/COLOR]', 'XBMC.RunPlugin(%s?name=%s&url=%s&mode=31&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	liz.addContextMenuItems(contextMenuItems, replaceItems=False)
+	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
+	return ok
+
+def addDirfv(name,url,mode,iconimage,pasta=True,total=1,plot=''):
+	u=sys.argv[0]+"?url="+urllib.quote_plus(url)+"&mode="+str(mode)+"&name="+urllib.quote_plus(name)+"&iconimage="+urllib.quote_plus(iconimage)
+	ok=True
+	liz=xbmcgui.ListItem(name, iconImage="iconimage", thumbnailImage=iconimage)
+	liz.setProperty('fanart_image', iconimage)
+	liz.setInfo(type="Video", infoLabels={"Title": name, "Plot": plot})
+	contextMenuItems = []
+	contextMenuItems.append(('Movie Information', 'XBMC.Action(Info)'))
+	contextMenuItems.append(("[COLOR orange]Remover um Favorito do addon[/COLOR]",'XBMC.RunPlugin(%s?name=%s&url=%s&mode=28&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	contextMenuItems.append(('[COLOR lime]Assistir Trailer[/COLOR]', 'XBMC.RunPlugin(%s?name=%s&url=%s&mode=31&iconimage=%s)'%(sys.argv[0], urllib.quote_plus(name), urllib.quote_plus(url), urllib.quote_plus(iconimage))))
+	liz.addContextMenuItems(contextMenuItems, replaceItems=False)
 	ok=xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]),url=u,listitem=liz,isFolder=pasta,totalItems=total)
 	return ok	
 
@@ -676,28 +923,28 @@ iconimage=None
 
 
 try:
-        url=urllib.unquote_plus(params["url"])
+    url=urllib.unquote_plus(params["url"])
 except:
-        pass
+    pass
 try:
-        name=urllib.unquote_plus(params["name"])
+    name=urllib.unquote_plus(params["name"])
 except:
-        pass
+    pass
 try:
-        mode=int(params["mode"])
+    mode=int(params["mode"])
 except:
-        pass
+    pass
 
 try:        
-        iconimage=urllib.unquote_plus(params["iconimage"])
+    iconimage=urllib.unquote_plus(params["iconimage"])
 except:
-        pass
+    pass
 
 
-print "Mode: "+str(mode)
-print "URL: "+str(url)
-print "Name: "+str(name)
-print "Iconimage: "+str(iconimage)
+print "Mode: "+ str(mode)
+print "URL: "+ str(url)
+print "Name: "+ str(name)
+print "Iconimage: "+ str(iconimage)
 
 ###############################################################################################################
 #                                                   MODOS                                                     #
@@ -753,16 +1000,13 @@ elif mode==16:
     resolve_animes(name,url,iconimage)
 elif mode==17:
     print ""
-    adicionar_favoritos_filmes(url)
+    adicionar_favoritos_filmes(name,url,iconimage)
 elif mode==18:
     print ""
     favoritos_filmes()	
 elif mode==19:
     print ""
     limpar_lista_favoritos_filmes()
-elif mode==20:
-    print ""
-    menu_filme(name,url,iconimage)
 elif mode==21:
     print ""
     trailer(name,url,iconimage)
@@ -787,15 +1031,16 @@ elif mode==27:
 elif mode==28:
     print ""
     limpar_lista_favoritos_animes()
-elif mode==29:
-    print ""
-    menu_series(name,url,iconimage)
-elif mode==30:
-    print ""
-    menu_animes(name,url,iconimage)
 elif mode==31:
     print ""
-    trailer2(name,url,iconimage)	
+    trailer2(name,url,iconimage)
+elif mode==32:
+    print  ""
+    listar_filmes_bluray(url)
+elif mode ==33:
+    print"" 
+    config()	
 	
 	
+
 xbmcplugin.endOfDirectory(int(sys.argv[1]))	

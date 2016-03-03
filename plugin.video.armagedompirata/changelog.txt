@@ -1,14 +1,31 @@
-14/10/2015 versão 0.0.1
+
+03/03/2016 versao 0.0.3
+- adicionado mais hosts (alguns podem nao funcionar em determinadas regioes)
+- adicionado favoritos ao Menu de contexto 
+- adicionado trailer ao Menu de contexto
+- adicionado configuracoes
+
+ Aguardem novas atualizacoes...
+
+==================================================================
+
+11/01/2016 Versao 0.0.2
+- corrigido hosts off
+- nao oficial...
+
+==================================================================
+
+14/10/2015 Versao 0.0.1
 - todos os hosts funcionando
 
 
-"Versão by Cleiton Leonel Creton,do addon ArmagedomFilmes."
+"Versao by Cleiton Leonel Creton,do addon ArmagedomFilmes."
 
-- FILMES - SÉRIES - ANIMES - COLEÇÕES DE FILMES 
-- Todas as opções acima você encontra nessa versão.
-- Algumas funções como a "COLEÇÕES DE FILMES" ainda persiste um bug,
-  mas nas próximas atualizações consertarei o erro...
+- FILMES - SERIES - ANIMES - COLECOES DE FILMES 
+- Todas as opcoes acima voce encontra nessa versao.
+- Algumas funcoes como a "COLECOES DE FILMES" ainda persiste um bug,
+  mas nas proximas atualizacoes consertarei o erro...
 ...Em breve melhorias!!!
 
-SUGESTÕES E RECLAMAÇÕES:
+SUGESTOES E RECLAMACOES:
 EMAIL:cleiton.leonel@gmail.com

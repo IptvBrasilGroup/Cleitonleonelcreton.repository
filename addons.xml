@@ -75,10 +75,10 @@
   </extension>
 </addon>
 
-<addon id="plugin.video.armagedompirata" name="Armagedom Pirata" version="0.0.2" provider-name="Cleiton Leonel Creton">
+<addon id="plugin.video.armagedompirata" name="Armagedom Pirata" version="0.0.3" provider-name="Cleiton Leonel Creton">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
-	<import addon="script.module.urlresolver" version="1.0.0"/>
+	<import addon="script.module.urlresolver" version="2.10.12"/>
 	<import addon="script.module.metahandler" optional="true"/>
 	<import addon="script.module.simplejson" optional="true"/>
 	<import addon="script.module.parsedom" optional="true"/>
