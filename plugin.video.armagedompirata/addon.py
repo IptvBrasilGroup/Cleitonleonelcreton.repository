@@ -16,7 +16,7 @@ except:
     import simplejson as json
 h = HTMLParser.HTMLParser()
 
-versao = '0.0.3'
+versao = '0.0.4'
 addon_id = 'plugin.video.armagedompirata'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -139,39 +139,37 @@ def listar_series(url):
 
 def listar_temporadas_series(url):
 	print url
-	html = gethtml(url)
-	soup = html.find("ul",{"class":"bp-series"})
-	temporadas = soup("li")
+	codigo_fonte = abrir_url(url)
+	soup = BeautifulSoup(abrir_url(url))
+	conteudo = BeautifulSoup(str(soup.find("ul", class_="bp-series")))
+	temporadas = conteudo("li")
 	total = len(temporadas)
 	i=1
 	print total
+	
 	while i <= total:
-		temporada = soup("li",{"class":"serie"+str(i)+"-code"})
+		temporada = conteudo("li", { "class" : "serie"+str(i)+"-code"})
 		for temp in temporada:
 			img = temp.img["src"]
 			titulo = str(i)+" temporada"
 			try:
 				addDirs(titulo,url,9,img,True,total)
+				setViewFilmes()	
 			except:
 				pass
-		i=i+1
-		setViewFilmes() 
+		i=i+1 
 
 def listar_episodios_series(name,url,iconimage):
 	print url
-	codigo = name.replace(' temporada','')
-	html = gethtml(url)
-	soup = html.find("li",{"class":"serie"+codigo+"-code"})
-	episodios = soup("a")
-	
-	print episodios[0]
-	
+	n = name.replace(' temporada','')
+	soup = BeautifulSoup(abrir_url(url))
+	content = BeautifulSoup(soup.find("li", { "class" : "serie"+n+"-code" }).prettify())
+	episodios = content.findAll("a")
 	a = []
-	
 	for episodio in episodios:
 		try:
 			xml = BeautifulSoup(abrir_url(episodio["href"]+'/feed'))
-			title = xml.title.string.encode('utf-8').replace('Comentários sobre: Assistir ','')
+			title = xml.title.string.encode('utf-8').replace('ComentÃ¡rios sobre: Assistir ','').replace('EpisÃ³dio', 'Episodio').replace('â€“','-')
 			try:
 				if "html" in os.path.basename(episodio["href"]):
 					temp = [episodio["href"],title]
@@ -180,12 +178,11 @@ def listar_episodios_series(name,url,iconimage):
 				pass
 		except:
 			pass
-
 	total = len(a)
 	for url2, titulo, in a:
 		titulo = titulo.replace('&#8211;',"-").replace('&#8217;',"'").replace('Assistir ','')
 		addDirs(titulo,url2,4,iconimage,False,total)
-        setViewFilmes()
+		setViewFilmes()
 
 def listar_animes(url):
     print url
@@ -197,7 +194,7 @@ def listar_animes(url):
         titulo = anime.a["title"].replace('Assistir ','').replace('&#8211;',"-")
         url = anime.a["href"]
         img = anime.img["src"]
-        addDira("[B]"+titulo.encode('utf-8')+"[/B]",url,13,img)	
+        addDira("[B]"+titulo.encode('utf-8')+"[/B]",url,13,img)
     soup = html.find('div',{"class":"wp-pagenavi"})
     page = soup("a",{"class":"nextpostslink"})
     for prox_pagina in page:
@@ -206,39 +203,36 @@ def listar_animes(url):
 
 def listar_temporadas_animes(name,url,iconimage):
 	print url
-	html = gethtml(url)
-	soup = html.find("ul",{"class":"bp-series"})
-	temporadas = soup("li")
+	codigo_fonte = abrir_url(url)
+	soup = BeautifulSoup(abrir_url(url))
+	conteudo = BeautifulSoup(str(soup.find("ul", class_="bp-series")))
+	temporadas = conteudo("li")
 	total = len(temporadas)
 	i=1
 	print total
 	while i <= total:
-		temporada = soup("li",{"class":"serie"+str(i)+"-code"})
+		temporada = conteudo("li", { "class" : "serie"+str(i)+"-code"})
 		for temp in temporada:
-			#img = temp.img["src"]
+			img = temp.img["src"]
 			titulo = str(i)+" temporada"
 			try:
 				addDira(titulo,url,14,iconimage,True,total)
+				setViewFilmes()
 			except:
 				pass
-		i=i+1
-		setViewFilmes() 
+		i=i+1 
 	
 def listar_episodios_animes(name,url,iconimage):	
 	print url
-	codigo = name.replace(' temporada','')
-	html = gethtml(url)
-	soup = html.find("li",{"class":"serie"+codigo+"-code"})
-	episodios = soup("a")
-	
-	print episodios[0]
-	
+	n = name.replace(' temporada','')
+	soup = BeautifulSoup(abrir_url(url))
+	content = BeautifulSoup(soup.find("li", { "class" : "serie"+n+"-code" }).prettify())
+	episodios = content.findAll("a")
 	a = []
-	
 	for episodio in episodios:
 		try:
-			xml = BeautifulSoup(abrir_url(episodio["href"]))
-			title = xml.title.string.encode('utf-8').replace('Assistir ','')
+			xml = BeautifulSoup(abrir_url(episodio["href"]+'/feed'))
+			title = xml.title.string.encode('utf-8').replace('ComentÃ¡rios sobre: Assistir ','').replace('EpisÃ³dio', 'Episodio').replace('â€“','-')
 			try:
 				if "html" in os.path.basename(episodio["href"]):
 					temp = [episodio["href"],title]
@@ -247,12 +241,11 @@ def listar_episodios_animes(name,url,iconimage):
 				pass
 		except:
 			pass
-
 	total = len(a)
 	for url2, titulo, in a:
-		titulo = titulo.replace('Assistir ','')
+		titulo = titulo.replace('&#8211;',"-").replace('&#8217;',"'").replace('Assistir ','')
 		addDira(titulo,url2,16,iconimage,False,total)
-        setViewFilmes() 
+		setViewFilmes()
 
 def resolve_animes(name,url,iconimage):
 	print url
@@ -524,7 +517,7 @@ def obtem_youwatch(url):
 def player(name,url,iconimage):
 	
 	try:
-		neodrive = r'src="(.*?neodrive.*?/embed.*?)"'
+		neodrive = r'src="(.*?neodrive.*?/embed/.*?)"'
 		neomega = r'src=".*?neodrive.*?id=(.*?)"'
 		videobis = r'SRC="(.*?videobis.*?/embed.*?)"'
 		videopw = r'src=".*?videopw.*?id=(.*?)"'
