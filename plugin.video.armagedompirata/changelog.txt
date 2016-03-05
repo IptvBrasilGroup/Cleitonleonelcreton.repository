@@ -1,4 +1,9 @@
 
+05/03/2016 Versao 0.0.5
+- Modos de visualizacao implantado (setViewMenu)
+
+==================================================================
+
 05/03/2016 Versao 0.0.4
 - correcao de bugs nas series e animes quando executados em android
 

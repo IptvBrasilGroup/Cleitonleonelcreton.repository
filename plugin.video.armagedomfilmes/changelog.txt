@@ -1,14 +1,12 @@
-14/10/2015 versão 0.0.1
-- todos os hosts funcionando
+12/11/2015 versão 0.3.0
+- animes!!!!
 
 
-"Versão by Cleiton Leonel Creton,do addon ArmagedomFilmes."
+29/09/2015 versão 0.2.9
+- arrumado o host dropvideo
 
-- FILMES - SÉRIES - ANIMES - COLEÇÕES DE FILMES 
-- Todas as opções acima você encontra nessa versão.
-- Algumas funções como a "COLEÇÕES DE FILMES" ainda persiste um bug,
-  mas nas próximas atualizações consertarei o erro...
-...Em breve melhorias!!!
 
-SUGESTÕES E RECLAMAÇÕES:
-EMAIL:cleiton.leonel@gmail.com
+<13/03/2014>
+* legendas para os streams do gdrive
+* suporte ao picasa
+* suporte ao vk.com

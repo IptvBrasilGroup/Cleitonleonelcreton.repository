@@ -16,7 +16,7 @@ except:
     import simplejson as json
 h = HTMLParser.HTMLParser()
 
-versao = '0.0.4'
+versao = '0.0.5'
 addon_id = 'plugin.video.armagedompirata'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -143,6 +143,7 @@ def listar_temporadas_series(url):
 	soup = BeautifulSoup(abrir_url(url))
 	conteudo = BeautifulSoup(str(soup.find("ul", class_="bp-series")))
 	temporadas = conteudo("li")
+	
 	total = len(temporadas)
 	i=1
 	print total
@@ -154,10 +155,10 @@ def listar_temporadas_series(url):
 			titulo = str(i)+" temporada"
 			try:
 				addDirs(titulo,url,9,img,True,total)
-				setViewFilmes()	
 			except:
 				pass
-		i=i+1 
+		i=i+1
+		setViewFilmes() 
 
 def listar_episodios_series(name,url,iconimage):
 	print url
@@ -217,11 +218,11 @@ def listar_temporadas_animes(name,url,iconimage):
 			titulo = str(i)+" temporada"
 			try:
 				addDira(titulo,url,14,iconimage,True,total)
-				setViewFilmes()
 			except:
 				pass
-		i=i+1 
-	
+		i=i+1
+		setViewFilmes()
+		
 def listar_episodios_animes(name,url,iconimage):	
 	print url
 	n = name.replace(' temporada','')
