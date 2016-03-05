@@ -16,7 +16,7 @@ except:
     import simplejson as json
 h = HTMLParser.HTMLParser()
 
-versao = '0.0.5'
+versao = '0.0.6'
 addon_id = 'plugin.video.armagedompirata'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
