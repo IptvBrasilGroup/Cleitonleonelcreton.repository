@@ -157,8 +157,7 @@ def listar_temporadas_series(url):
 				addDirs(titulo,url,9,img,True,total)
 			except:
 				pass
-		i=i+1
-		setViewFilmes() 
+		i=i+1 
 
 def listar_episodios_series(name,url,iconimage):
 	print url
@@ -221,7 +220,6 @@ def listar_temporadas_animes(name,url,iconimage):
 			except:
 				pass
 		i=i+1
-		setViewFilmes()
 		
 def listar_episodios_animes(name,url,iconimage):	
 	print url
@@ -321,7 +319,7 @@ def favoritos_series():
 			addDirs(nome,rtmp,8,img)
 		except:
 			pass	
-	setViewFilmes()
+	        setViewFilmes()
 
 def limpar_lista_favoritos_series():
 	arquivo = open(favseries, 'r')
@@ -358,7 +356,7 @@ def favoritos_animes():
 			addDira(nome,rtmp,13,img)
 		except:
 			pass	
-	setViewFilmes()
+	        setViewFilmes()
 
 def limpar_lista_favoritos_animes():
 	arquivo = open(favanimes, 'r')
