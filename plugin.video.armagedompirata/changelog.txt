@@ -1,20 +1,32 @@
 
-05/03/2016 Versao 0.0.6
-- Testando código para resolver varios problemas com android
+
+
+
+
+
+
+
+06/03/2016 versao 0.0.7
+- modificacao no menu de contexto,codigo simplificado.
 
 ==================================================================
 
-05/03/2016 Versao 0.0.5
-- Modos de visualizacao implantado (setViewMenu)
+05/03/2016 versao 0.0.6
+- corrigido bugs no android,porem o funcionamento das series e animes nao ocorre... 
 
 ==================================================================
 
-05/03/2016 Versao 0.0.4
-- Correcao de bugs nas series e animes quando executados em android
+04/03/2016 versao 0.0.5
+- testando correcoes de bugs no android...
 
 ==================================================================
 
-03/03/2016 Versao 0.0.3
+04/03/2016 versao 0.0.4
+- neodrive adicionado aos hosts
+
+==================================================================
+
+03/03/2016 versao 0.0.3
 - adicionado mais hosts (alguns podem nao funcionar em determinadas regioes)
 - adicionado favoritos ao Menu de contexto 
 - adicionado trailer ao Menu de contexto
