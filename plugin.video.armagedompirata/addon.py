@@ -5,7 +5,9 @@
 #                                     BIBLIOTECAS A IMPORTAR E DEFINICÕES                                  #
 ############################################################################################################
 
-import urllib,urllib2,re,xbmcplugin,xbmcgui,xbmc,xbmcaddon,HTMLParser,xmltosrt,os,sys,urlparse
+import urllib,urllib2,re,xbmcplugin,xbmcgui,xbmc,xbmcaddon,HTMLParser,xmltosrt,os,sys,urlparse,base64
+import mechanize, cookielib
+from mechanize import Browser
 import urlresolver
 import jsunpack
 from resources.lib.libraries import client
@@ -16,7 +18,7 @@ except:
     import simplejson as json
 h = HTMLParser.HTMLParser()
 
-versao = '0.0.7'
+versao = '0.0.8'
 addon_id = 'plugin.video.armagedompirata'
 selfAddon = xbmcaddon.Addon(id=addon_id)
 addonfolder = selfAddon.getAddonInfo('path')
@@ -33,22 +35,58 @@ line1 = "Lista de Favoritos limpa com sucesso"
 line2 = "Favorito adicionado com sucesso"
 line3 = "Favorito removido com sucesso"
 icon = addonfolder + '/icon.png'
-time = 2 #in miliseconds
+time = 2
+username = urllib.quote(selfAddon.getSetting('username'))
+password = selfAddon.getSetting('password')
+server = base64.b64decode('aHR0cDovL2dvZmxpeC45Ni5sdC8=')
 
 ############################################################################################################
 #                                                  MENUS                                                   #
 ############################################################################################################
 
+def login(url, New=False):
+        import mechanize
+        import cookielib
+
+        br = mechanize.Browser()
+	cj = cookielib.LWPCookieJar()
+        br.set_cookiejar(cj)
+	if not New:
+	    cj.load(os.path.join(xbmc.translatePath("special://temp"),"addon_cookies__Armagedom_pirata"), ignore_discard=False, ignore_expires=False)
+        br.set_handle_equiv(True)
+        br.set_handle_gzip(False)
+        br.set_handle_redirect(True)
+        br.set_handle_referer(True)
+        br.set_handle_robots(False)
+        br.set_handle_refresh(mechanize._http.HTTPRefreshProcessor(), max_time=1)
+        br.addheaders = [('User-agent', 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1')]
+        if New:
+	    br.open(server)
+	    br.select_form(nr=0)
+	    br.form['username'] = username
+	    br.form['password'] = password
+	    br.submit()
+	    cj.save(os.path.join(xbmc.translatePath("special://temp"),"addon_cookies_Armagedom_pirata"))
+        br.open(url)
+        return br.response().read()
+
 def menu():
-    addDir("[B]Gêneros[/B]",url_base3+'0B4KWNSgTIdibVURvSGRRaWVBanc',2,url_base2+'5oj20tqw3/G_neros.png')
-    addDir("[B]Lançamentos[/B]",url_base+'?cat=3236',3,url_base2+'mqbw2x5r7/Lan_amentos.png')	
-    addDir("[B]Séries[/B]",url_base+'?cat=21',7,url_base2+'ygptkayjn/S_ries.png')
-    addDir("[B]Animes[/B]",url_base+'?cat=36',12,url_base2+'oxg4qub1f/Animes.png')
-    addDir("[B]Bluray[/B]",url_base+'?cat=5529',32,url_base2+'5gvf4bfxf/Bluray.png')
-    addDir("[B]Coleções de Filmes[/B]",url_base+'?cat=4509',5,url_base2+'mio96eusj/Cole_es_de_Filmes.png')	
-    addDir("[B]Favoritos[/B]",'-',22,url_base2+'rilped0f7/Favoritos.png')
-    addDir("[B]Configurações[/B]",'-',33,url_base2+'kulxnoiub/config.png')	
-    setViewMenu()
+    try:
+        principal = login(server + 'pagina_privada.php', True)
+        addDir("[B]Gêneros[/B]",url_base3+'0B4KWNSgTIdibVURvSGRRaWVBanc',2,url_base2+'5oj20tqw3/G_neros.png')
+        addDir("[B]Lançamentos[/B]",url_base+'?cat=3236',3,url_base2+'mqbw2x5r7/Lan_amentos.png')	
+        addDir("[B]Séries[/B]",url_base+'?cat=21',7,url_base2+'ygptkayjn/S_ries.png')
+        addDir("[B]Animes[/B]",url_base+'?cat=36',12,url_base2+'oxg4qub1f/Animes.png')
+        addDir("[B]Bluray[/B]",url_base+'?cat=5529',32,url_base2+'5gvf4bfxf/Bluray.png')
+        addDir("[B]Coleções de Filmes[/B]",url_base+'?cat=4509',5,url_base2+'mio96eusj/Cole_es_de_Filmes.png')	
+        addDir("[B]Favoritos[/B]",'-',22,url_base2+'rilped0f7/Favoritos.png')
+        addDir("[B]Configurações[/B]",'-',33,url_base2+'kulxnoiub/config.png')	
+        setViewMenu()
+    except:
+        addLink("Apenas para usuários cadastrados no site [COLOR blue]http://goflix.96.lt[/COLOR]","-", "https://cdn0.iconfinder.com/data/icons/simple-web-navigation/165/574949-Exclamation-512.png")
+        addLink("Caso já tenha login/senha, insira nas configurações do addon.","-", "https://cdn0.iconfinder.com/data/icons/simple-web-navigation/165/574949-Exclamation-512.png")
+        while xbmc.Player().isPlaying():
+            time.sleep(1)		
 	
 def todas_categorias(url):	
 	html = gethtml(url)

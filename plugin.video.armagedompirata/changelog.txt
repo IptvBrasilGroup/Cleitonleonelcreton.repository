@@ -1,10 +1,10 @@
 
 
-
-
-
-
-
+025/03/2016 versao 0.0.8
+- Versao teste para avaliacao do sistema de login que sera implantado em todos os meus addons.
+- SUGESTOES E RECLAMACOES:
+  EMAIL:cleiton.leonel@gmail.com
+==================================================================
 
 06/03/2016 versao 0.0.7
 - modificacao no menu de contexto,codigo simplificado.

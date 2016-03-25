@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
+    <category label="Login">
+      <setting label="[B][COLOR green]Dados de conta:[/B][/COLOR]" type="lsep" />
+      <setting id="username" type="text" label="Usuario" default=""/>
+      <setting id="password" type="text" label="Senha" default="" option="hidden" enable="!eq(-1,false)"/>
+   </category>
    <category label="Definicoes gerais">
         <setting id="menuVisu" type="enum" label="Visualização de Menu" values="Lista|Lista Grande|Miniatura" default="0" />
         <setting id="filmesVisu" type="enum" label="Visualização de Filmes" values="Lista|Lista Grande|Miniatura|Posters|Fanart|Media Info 1|Media Info 2|Media Info 3" default="2" />
